@@ -87,5 +87,13 @@ class FedExTest < Test::Unit::TestCase
     assert_equal "FedEx Some Weird Rate", FedEx.service_name_for_code('SOME_WEIRD_RATE')
   end
   
+  def test_generate_label
+    mock_response = xml_fixture('fedex/label_response')
+    @carrier.stubs(:commit).returns(mock_response)
+    response = @carrier.generate_label(@locations[:ottawa],
+                            @locations[:beverly_hills],
+                            @packages.values_at(:book, :wii), :test => true)
+    assert_instance_of LabelResponse, response 
+  end
   
 end

@@ -13,7 +13,12 @@ module ActiveMerchant #:nodoc:
                   :address3,
                   :phone,
                   :fax,
-                  :address_type
+                  :address_type,
+                  :name,
+                  :attention_name,
+                  :company_name,
+                  :tax_id_number,
+                  :email
       
       alias_method :zip, :postal_code
       alias_method :postal, :postal_code

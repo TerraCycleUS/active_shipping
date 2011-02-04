@@ -35,6 +35,7 @@ autoload :XmlNode, 'vendor/xml_node/lib/xml_node'
 autoload :Quantified, 'vendor/quantified/lib/quantified'
 
 require 'net/https'
+require 'base64'
 require 'active_merchant/common'
 
 require 'active_shipping/shipping/base'
@@ -47,3 +48,4 @@ require 'active_shipping/shipping/rate_estimate'
 require 'active_shipping/shipping/shipment_event'
 require 'active_shipping/shipping/carrier'
 require 'active_shipping/shipping/carriers'
+require 'active_shipping/shipping/label_response'
