@@ -14,7 +14,9 @@ module ActiveMerchant
       
       RESOURCES = {
         :rates => 'ups.app/xml/Rate',
-        :track => 'ups.app/xml/Track'
+        :track => 'ups.app/xml/Track',
+        :label_request => 'ups.app/xml/ShipConfirm',
+        :label_accept => 'ups.app/xml/ShipAccept'
       }
       
       PICKUP_CODES = HashWithIndifferentAccess.new({
@@ -111,6 +113,43 @@ module ActiveMerchant
         tracking_request = build_tracking_request(tracking_number, options)
         response = commit(:track, save_request(access_request + tracking_request), (options[:test] || false))
         parse_tracking_response(response, options)
+      end
+      
+      def generate_label(origin, destination, packages, options = {})
+        ship_confirm_response = do_ship_confirm(origin, destination, packages, options)
+        xml = REXML::Document.new(ship_confirm_response)
+        success = response_success?(xml)
+        if not success
+          Rails.logger.error(ship_confirm_response)
+          raise xml.get_text('ShipmentConfirmResponse/Response/Error/ErrorDescription').to_s
+        end
+              
+        ship_accept_response = do_ship_accept(ship_confirm_response, options)
+        xml = REXML::Document.new(ship_accept_response)
+        success = response_success?(xml)
+        if not success
+          Rails.logger.error(ship_accept_response)
+          raise xml.get_text('ShipmentConfirmResponse/Response/Error/ErrorDescription').to_s
+        end
+
+        return OpenStruct.new(
+            :image_data => parse_label_image_data(xml),
+            :tracking_number => parse_label_tracking_number(xml)
+          )
+      end
+
+      def do_ship_confirm(origin, destination, packages, options)
+        origin, destination = upsified_location(origin), upsified_location(destination)
+        options = @options.update(options)
+        packages = Array(packages)
+        label_request = build_access_request + build_label_request(origin, destination, packages, options)
+        commit(:label_request, label_request, (options[:test] || false)) 
+      end
+
+      def do_ship_accept(ship_confirm_response, options)
+        digest = parse_label_response(ship_confirm_response, options)
+        label_accept_request = build_label_accept_request(digest, options) 
+        commit(:label_accept, save_request(build_access_request + label_accept_request), (options[:test] || false))
       end
       
       protected
@@ -232,7 +271,125 @@ module ActiveMerchant
         end
         xml_request.to_s
       end
-      
+
+      def build_label_request(origin, destination, packages, options)
+        xml_request = XmlNode.new('ShipmentConfirmRequest') do |root_node|
+          root_node << XmlNode.new('Request') do |request|
+            request << XmlNode.new('RequestAction','ShipConfirm')
+            request << XmlNode.new('RequestOption', 'nonvalidate')
+            request << XmlNode.new('XcpiVersion', '')
+            request << XmlNode.new('TransactionReference') do |transaction_reference|
+              transaction_reference << XmlNode.new('CustomerContext', options[:transaction_reference] || '')
+            end
+          end
+
+          root_node << XmlNode.new('Shipment') do |shipment|
+            shipment << XmlNode.new('Description', options[:description])
+            if options[:return_service]
+              shipment << XmlNode.new('ReturnService') do |return_service|
+                return_service << XmlNode.new('Code', options[:return_service])
+              end
+
+              shipment << XmlNode.new('PackageServiceOptions') do |package_service_options|
+                package_service_options << XmlNode.new('InsuredValue') do |insured_value|
+                  insured_value << XmlNode.new('MonetaryValue', '')
+                  insured_value << XmlNode.new('CurrencyCode', 'US')
+                end
+              end
+            end
+            shipment << build_location_node('Shipper', (options[:shipper] || origin), options) 
+            shipment << build_location_node('ShipTo', destination, options)
+            shipment << build_location_node('ShipFrom', origin, options)
+            
+            # not implemented:  all methods for PaymentInformation
+            shipment << XmlNode.new('PaymentInformation') do |payment_information|
+              payment_information << XmlNode.new('Prepaid') do |prepaid|
+                prepaid << XmlNode.new('BillShipper') do |bill_shipper|
+                  bill_shipper << XmlNode.new('AccountNumber', @options[:origin_account])
+                end
+              end
+            end
+
+            shipment << XmlNode.new('Service') do |service|
+              service << XmlNode.new('Code', (options[:service_type_code] || '02'))
+              service << XmlNode.new('Description', (options[:service_type_description] || 'Ground'))
+            end
+
+            packages.each do |package|
+              debugger if package.nil?
+              imperial = ['US','LR','MM'].include?(origin.country_code(:alpha2))
+              
+              shipment << XmlNode.new('Package') do |package_node|
+                package_node << XmlNode.new("Description", (package.options[:description] || "NONE"))
+                package_node << XmlNode.new('PackagingType') do |packaging_type|
+                  packaging_type << XmlNode.new('Code', (package.options[:packaging_type_code] || '02'))
+                  packaging_type << XmlNode.new('Description', 'Customer Supplied')
+                end
+
+                package_node << XmlNode.new("Dimensions") do |dimensions|
+                  dimensions << XmlNode.new("UnitOfMeasurement") do |units|
+                    units << XmlNode.new("Code", imperial ? 'IN' : 'CM')
+                  end
+                  [:length,:width,:height].each do |axis|
+                    value = ((imperial ? package.inches(axis) : package.cm(axis)).to_f*1000).round/1000.0 # 3 decimals
+                    dimensions << XmlNode.new(axis.to_s.capitalize, [value,0.1].max)
+                  end
+                end
+
+                package_node << XmlNode.new("PackageWeight") do |package_weight|
+                  package_weight << XmlNode.new("UnitOfMeasurement") do |units|
+                    units << XmlNode.new("Code", imperial ? 'LBS' : 'KGS')
+                  end
+                  
+                  value = ((imperial ? package.lbs : package.kgs).to_f*1000).round/1000.0 # 3 decimals
+                  package_weight << XmlNode.new("Weight", [value,0.1].max)
+                end
+
+                if package.options[:reference_numbers]
+                  package.options[:reference_numbers].each do |ref|
+                    package_node << XmlNode.new("ReferenceNumber") do |reference_number|
+                      reference_number << XmlNode.new("Code", ref[:code]) if ref[:code]
+                      reference_number << XmlNode.new("Value", ref[:value]) if ref[:value]
+                    end
+                  end
+                end
+
+              end
+            end
+
+          end
+
+          root_node << XmlNode.new('LabelSpecification') do |label_specification|
+            label_specification << XmlNode.new('LabelPrintMethod') do |label_print_method|
+              label_print_method << XmlNode.new('Code', 'GIF')
+              label_print_method << XmlNode.new('Description', 'gif file')
+            end
+            label_specification << XmlNode.new('LabelImageFormat') do |label_image_format|
+              label_image_format << XmlNode.new('Code','GIF')
+              label_image_format << XmlNode.new('Description','gif')
+            end
+            label_specification << XmlNode.new('HTTPUserAgent', 'Mozilla/5.0')
+          end
+
+        end
+        xml_request.to_s
+      end
+
+      def build_label_accept_request(digest, options={})
+        xml_request = XmlNode.new('ShipmentAcceptRequest') do |root_node|
+          root_node << XmlNode.new('Request') do |request|
+            request << XmlNode.new('TransactionReference') do |transaction_reference|
+              transaction_reference << XmlNode.new('CustomerContext', 'NULL')
+            end
+            request << XmlNode.new('RequestAction', 'ShipAccept')
+            request << XmlNode.new('RequestOption', '1')
+          end
+
+          root_node << XmlNode.new('ShipmentDigest', digest)
+        end
+        xml_request.to_s
+      end
+            
       def build_location_node(name,location,options={})
         # not implemented:  * Shipment/Shipper/Name element
         #                   * Shipment/(ShipTo|ShipFrom)/CompanyName element
@@ -241,6 +398,10 @@ module ActiveMerchant
         location_node = XmlNode.new(name) do |location_node|
           location_node << XmlNode.new('PhoneNumber', location.phone.gsub(/[^\d]/,'')) unless location.phone.blank?
           location_node << XmlNode.new('FaxNumber', location.fax.gsub(/[^\d]/,'')) unless location.fax.blank?
+          location_node << XmlNode.new('Name', location.name) unless location.name.blank?
+          location_node << XmlNode.new('AttentionName', location.attention_name) unless location.attention_name.blank?
+          location_node << XmlNode.new('CompanyName', location.company_name) unless location.company_name.blank?
+          location_node << XmlNode.new('TaxIdentificationNumber', location.tax_id_number) unless location.tax_id_number.blank?
           
           if name == 'Shipper' and (origin_account = @options[:origin_account] || options[:origin_account])
             location_node << XmlNode.new('ShipperNumber', origin_account)
@@ -346,6 +507,20 @@ module ActiveMerchant
           :tracking_number => tracking_number)
       end
       
+      def parse_label_response(response, options = {})
+        xml = REXML::Document.new(response)
+        digest = xml.get_text('ShipmentConfirmResponse/ShipmentDigest').to_s 
+      end
+      
+      def parse_label_image_data(xml)
+        encoded_image = xml.get_text('ShipmentAcceptResponse/ShipmentResults/PackageResults/LabelImage/GraphicImage').to_s
+        Base64::decode64(encoded_image)
+      end
+
+      def parse_label_tracking_number(xml)
+        xml.get_text('ShipmentAcceptResponse/ShipmentResults/PackageResults/TrackingNumber').to_s 
+      end
+
       def location_from_address_node(address)
         return nil unless address
         Location.new(
@@ -360,6 +535,10 @@ module ActiveMerchant
       end
       
       def response_success?(xml)
+        success = false
+        success = true if xml.get_text('/*/Response/ResponseStatusCode').to_s == '1'
+        success = true if xml.get_text('ShipmentConfirmResponse/Response/ResponseStatusCode').to_s == '1'
+        success
         xml.get_text('/*/Response/ResponseStatusCode').to_s == '1'
       end
       
