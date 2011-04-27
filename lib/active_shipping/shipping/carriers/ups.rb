@@ -555,6 +555,8 @@ module ActiveMerchant
       end
       
       def commit(action, request, test = false)
+        Rails.logger.debug("#{test ? TEST_URL : LIVE_URL}/#{RESOURCES[action]}")
+        Rails.logger.debug(request)
         ssl_post("#{test ? TEST_URL : LIVE_URL}/#{RESOURCES[action]}", request)
       end
       
