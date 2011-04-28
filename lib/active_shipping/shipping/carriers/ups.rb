@@ -304,11 +304,7 @@ module ActiveMerchant
             # not implemented:  all methods for PaymentInformation
             shipment << XmlNode.new('PaymentInformation') do |payment_information|
               if options[:freight_collect]
-                payment_information << XmlNode.new('FreightCollect') do |freightcollect|
-                   freightcollect << XmlNode.new('BillShipper') do |bill_shipper|
-                     bill_shipper << XmlNode.new('AccountNumber', @options[:origin_account])
-                   end
-                 end
+                payment_information << XmlNode.new('FreightCollect') 
               else
                 payment_information << XmlNode.new('Prepaid') do |prepaid|
                   prepaid << XmlNode.new('BillShipper') do |bill_shipper|
