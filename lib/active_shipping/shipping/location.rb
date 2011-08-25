@@ -14,7 +14,6 @@ module ActiveMerchant #:nodoc:
                   :phone,
                   :fax,
                   :address_type,
-                  :name,
                   :attention_name,
                   :company_name,
                   :tax_id_number,
@@ -39,6 +38,10 @@ module ActiveMerchant #:nodoc:
         @address3 = options[:address3]
         @phone = options[:phone]
         @fax = options[:fax]
+        @attention_name = options[:attention_name]
+        @company_name = options[:company_name]
+        @tax_id_number = options[:tax_id_number]
+        @email = options[:email]
         raise ArgumentError.new('address_type must be either "residential" or "commercial"') if options[:address_type] and not (["residential", "commercial", ""]).include?(options[:address_type].to_s)
         @address_type = options[:address_type].nil? ? nil : options[:address_type].to_s
       end
@@ -56,7 +59,11 @@ module ActiveMerchant #:nodoc:
           :address3 => [:address3],
           :phone => [:phone, :phone_number],
           :fax => [:fax, :fax_number],
-          :address_type => [:address_type]
+          :address_type => [:address_type],
+          :attention_name => [:attention_name],
+          :company_name => [:company_name],
+          :tax_id_number => [:tax_id_number],
+          :email => [:email]
         }
         attributes = {}
         hash_access = begin
