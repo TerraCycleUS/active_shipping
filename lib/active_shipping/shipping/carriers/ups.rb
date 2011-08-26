@@ -120,22 +120,23 @@ module ActiveMerchant
         xml = REXML::Document.new(ship_confirm_response)
         success = response_success?(xml)
         if not success
-          Rails.logger.error(ship_confirm_response)
+          warn(ship_confirm_response)
           raise xml.get_text('ShipmentConfirmResponse/Response/Error/ErrorDescription').to_s
         end
               
         ship_accept_response = do_ship_accept(ship_confirm_response, options)
         xml = REXML::Document.new(ship_accept_response)
         success = response_success?(xml)
+        message = response_message(xml)
         if not success
-          Rails.logger.error(ship_accept_response)
+          warn(ship_accept_response)
           raise xml.get_text('ShipmentConfirmResponse/Response/Error/ErrorDescription').to_s
         end
 
-        return OpenStruct.new(
-            :image_data => parse_label_image_data(xml),
-            :tracking_number => parse_label_tracking_number(xml)
-          )
+        LabelResponse.new(success, message, Hash.from_xml(ship_accept_response), {
+          :image_data => parse_label_image_data(xml),
+          :tracking_number => parse_label_tracking_number(xml)
+        })
       end
 
       def do_ship_confirm(origin, destination, packages, options)
@@ -555,8 +556,6 @@ module ActiveMerchant
       end
       
       def commit(action, request, test = false)
-        Rails.logger.debug("#{test ? TEST_URL : LIVE_URL}/#{RESOURCES[action]}")
-        Rails.logger.debug(request)
         ssl_post("#{test ? TEST_URL : LIVE_URL}/#{RESOURCES[action]}", request)
       end
       

@@ -78,4 +78,17 @@ class UPSTest < Test::Unit::TestCase
     assert Package.new((150 * 16) + 0.01, [5,5,5], :units => :imperial).mass > @carrier.maximum_weight
     assert Package.new((150 * 16) - 0.01, [5,5,5], :units => :imperial).mass < @carrier.maximum_weight
   end
+  
+  def test_generate_label
+    mock_confirm_response = xml_fixture('ups/ship_confirm_response')
+    @carrier.expects(:do_ship_confirm).returns(mock_confirm_response)
+    mock_accept_response = xml_fixture('ups/ship_accept_response')
+    @carrier.expects(:do_ship_accept).returns(mock_accept_response)
+    
+    response = @carrier.generate_label(@locations[:new_york_with_company_name],
+                            @locations[:beverly_hills_with_company_name],
+                            @packages.values_at(:book, :wii), :test => true)
+    assert_instance_of LabelResponse, response 
+  end
+  
 end

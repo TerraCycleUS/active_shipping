@@ -176,7 +176,26 @@ module ActiveMerchant
                                       :city => 'Wellington',
                                       :address1 => '85 Victoria St',
                                       :address2 => 'Te Aro',
-                                      :postal_code => '6011')
+                                      :postal_code => '6011'),
+        :new_york_with_company_name => Location.new(
+                                      :company_name => "Bar Corp",
+                                      :name => "Bob Bobsen",
+                                      :country => 'US',
+                                      :city => 'New York',
+                                      :state => 'NY',
+                                      :address1 => '780 3rd Avenue',
+                                      :address2 => 'Suite  2601',
+                                      :zip => '10017'),
+        :beverly_hills_with_company_name => Location.new(
+                                      :company_name => "Foo Inc",
+                                      :country => 'US',
+                                      :state => 'CA',
+                                      :city => 'Beverly Hills',
+                                      :address1 => '455 N. Rexford Dr.',
+                                      :address2 => '3rd Floor',
+                                      :zip => '90210',
+                                      :phone => '1-310-285-1013',
+                                      :fax => '1-310-275-8159')
       }
       
     end
