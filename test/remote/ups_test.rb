@@ -1,11 +1,17 @@
 require 'test_helper'
 
 class UPSTest < Test::Unit::TestCase
+  @@validated_credentials = false
   
   def setup
     @packages  = TestFixtures.packages
     @locations = TestFixtures.locations
     @carrier   = UPS.new(fixtures(:ups))
+
+    if !@@validated_credentials
+      warn "Invalid credentials. You can supply valid ones by copying fixtures.yml to ~/.active_merchant/fixtures.yml and changing its values." unless @carrier.valid_credentials?
+      @@validated_credentials = true
+    end
   end
   
   def test_tracking
@@ -203,5 +209,46 @@ class UPSTest < Test::Unit::TestCase
     # then UPS will default to residential rates:
     assert_not_equal prices_of.call(:fake_google_as_commercial), prices_of.call(:fake_google_as_residential)
     assert prices_of.call(:fake_home_as_residential).first > prices_of.call(:fake_home_as_commercial).first
+  end
+  
+  def test_generate_label
+    response = nil
+    
+    assert_nothing_raised do
+      response = @carrier.generate_label(
+        @locations[:new_york_with_company_name],
+        @locations[:beverly_hills_with_company_name],
+        @packages.values_at(:book, :wii), 
+        :test => true,
+        :freight_collect => false # Default unless changed in fixtures. For this test, we want it off.
+      )
+    end
+
+    assert response.success?
+    assert response.tracking_number
+    assert response.image_data
+  end
+  
+  def test_generate_label_with_freight_collect
+    # Since this test requires a valid receiver_account, only run this test if the user has set up a
+    # ups:freight_collect:receiver_account value in their ~/.active_merchant/fixtures.yml.
+    if fixtures(:ups)[:freight_collect] && fixtures(:ups)[:freight_collect][:receiver_account]
+      response = nil
+    
+      # assert_nothing_raised do
+        response = @carrier.generate_label(
+          @locations[:new_york_with_company_name],
+          @locations[:beverly_hills_with_company_name],
+          @packages.values_at(:book, :wii), 
+          :test => true
+        )
+      # end
+
+      assert response.success?
+      assert response.tracking_number
+      assert response.image_data
+    else
+      warn "Skipping test_generate_label_with_freigh_collect. To run, add a value for ups:freight_collect:receiver_account to your ~/.active_merchant/fixtures.yml"
+    end
   end
 end

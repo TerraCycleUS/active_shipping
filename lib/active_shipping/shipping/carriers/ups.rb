@@ -116,6 +116,7 @@ module ActiveMerchant
       end
       
       def generate_label(origin, destination, packages, options = {})
+        options = @options.merge(options)
         ship_confirm_response = do_ship_confirm(origin, destination, packages, options)
         xml = REXML::Document.new(ship_confirm_response)
         success = response_success?(xml)
@@ -149,7 +150,7 @@ module ActiveMerchant
 
       def do_ship_accept(ship_confirm_response, options)
         digest = parse_label_response(ship_confirm_response, options)
-        label_accept_request = build_label_accept_request(digest, options) 
+        label_accept_request = build_label_accept_request(digest, options)
         commit(:label_accept, save_request(build_access_request + label_accept_request), (options[:test] || false))
       end
       
@@ -307,13 +308,13 @@ module ActiveMerchant
               if options[:freight_collect]
                 payment_information << XmlNode.new('FreightCollect') do |fc|
                   fc << XmlNode.new('BillReceiver') do |bill_reciever|
-                    bill_reciever << XmlNode.new('AccountNumber', @options[:origin_account])
+                    bill_reciever << XmlNode.new('AccountNumber', options[:freight_collect][:receiver_account])
                   end
                 end
               else
                 payment_information << XmlNode.new('Prepaid') do |prepaid|
                   prepaid << XmlNode.new('BillShipper') do |bill_shipper|
-                    bill_shipper << XmlNode.new('AccountNumber', @options[:origin_account])
+                    bill_shipper << XmlNode.new('AccountNumber', options[:origin_account])
                   end
                 end
               end
@@ -325,7 +326,6 @@ module ActiveMerchant
             end
 
             packages.each do |package|
-              debugger if package.nil?
               imperial = ['US','LR','MM'].include?(origin.country_code(:alpha2))
               
               shipment << XmlNode.new('Package') do |package_node|
