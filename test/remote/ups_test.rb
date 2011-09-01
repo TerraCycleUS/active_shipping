@@ -245,8 +245,7 @@ class UPSTest < Test::Unit::TestCase
       # end
 
       assert response.success?
-      assert response.tracking_number
-      assert response.image_data
+      assert response.labels
     else
       warn "Skipping test_generate_label_with_freigh_collect. To run, add a value for ups:freight_collect:receiver_account to your ~/.active_merchant/fixtures.yml"
     end

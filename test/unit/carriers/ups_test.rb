@@ -89,6 +89,12 @@ class UPSTest < Test::Unit::TestCase
                             @locations[:beverly_hills_with_company_name],
                             @packages.values_at(:book, :wii), :test => true)
     assert_instance_of LabelResponse, response 
+    assert_equal [
+      "1Z1AR8610290262441",
+      "1Z1AR8610290973852"
+      ], response.labels.map {|label| label.tracking_number}
+      
+    response.labels.each {|label| assert(label.image_data)}
   end
   
 end

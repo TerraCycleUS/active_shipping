@@ -135,8 +135,7 @@ module ActiveMerchant
         end
 
         LabelResponse.new(success, message, Hash.from_xml(ship_accept_response), {
-          :image_data => parse_label_image_data(xml),
-          :tracking_number => parse_label_tracking_number(xml)
+          :labels => parse_ship_accept_response(xml)
         })
       end
 
@@ -521,14 +520,25 @@ module ActiveMerchant
         digest = xml.get_text('ShipmentConfirmResponse/ShipmentDigest').to_s 
       end
       
-      def parse_label_image_data(xml)
-        encoded_image = xml.get_text('ShipmentAcceptResponse/ShipmentResults/PackageResults/LabelImage/GraphicImage').to_s
-        Base64::decode64(encoded_image)
+      def parse_ship_accept_response(xml)
+        labels = []
+        xml.elements.each('ShipmentAcceptResponse/ShipmentResults/PackageResults/') do |package|
+          labels << Label.new(
+            package.get_text("TrackingNumber").to_s,
+            Base64::decode64(package.get_text("LabelImage/GraphicImage").to_s)
+          )
+        end
+        labels
       end
-
-      def parse_label_tracking_number(xml)
-        xml.get_text('ShipmentAcceptResponse/ShipmentResults/PackageResults/TrackingNumber').to_s 
-      end
+      
+      # def parse_label_image_data(xml)
+      #   encoded_image = xml.get_text('ShipmentAcceptResponse/ShipmentResults/PackageResults/LabelImage/GraphicImage').to_s
+      #   Base64::decode64(encoded_image)
+      # end
+      # 
+      # def parse_label_tracking_number(xml)
+      #   xml.get_text('ShipmentAcceptResponse/ShipmentResults/PackageResults/TrackingNumber').to_s 
+      # end
 
       def location_from_address_node(address)
         return nil unless address
