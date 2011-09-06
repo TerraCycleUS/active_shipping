@@ -185,7 +185,8 @@ module ActiveMerchant
                                       :state => 'NY',
                                       :address1 => '780 3rd Avenue',
                                       :address2 => 'Suite  2601',
-                                      :zip => '10017'),
+                                      :zip => '10017',
+                                      :phone => "212-555-5555"),
         :beverly_hills_with_company_name => Location.new(
                                       :company_name => "Foo Inc",
                                       :country => 'US',

@@ -115,13 +115,37 @@ module ActiveMerchant
         parse_tracking_response(response, options)
       end
       
+      # def generate_label(origin, destination, packages, options = {})
+      #   options = @options.merge(options)
+      #   ship_confirm_response = do_ship_confirm(origin, destination, packages, options)
+      #   xml = REXML::Document.new(ship_confirm_response)
+      #   success = response_success?(xml)
+      #   if not success
+      #     warn(ship_confirm_response)
+      #     raise xml.get_text('ShipmentConfirmResponse/Response/Error/ErrorDescription').to_s
+      #   end
+      #         
+      #   ship_accept_response = do_ship_accept(ship_confirm_response, options)
+      #   xml = REXML::Document.new(ship_accept_response)
+      #   success = response_success?(xml)
+      #   message = response_message(xml)
+      #   if not success
+      #     warn(ship_accept_response)
+      #     raise xml.get_text('ShipmentConfirmResponse/Response/Error/ErrorDescription').to_s
+      #   end
+      # 
+      #   LabelResponse.new(success, message, Hash.from_xml(ship_accept_response), {
+      #     :labels => parse_ship_accept_response(xml)
+      #   })
+      # end
+
       def generate_label(origin, destination, packages, options = {})
         options = @options.update(options)
         packages = Array(packages)
         label_request = build_label_request(origin, destination, packages, options)
 
         response = commit(save_request(label_request), (options[:test] || false)).gsub(/<(\/)?.*?\:(.*?)>/, '<\1\2>')
-        result =  parse_label_response(response, options)
+        result = parse_label_response(response, options)
         result
       end
       
@@ -157,8 +181,10 @@ module ActiveMerchant
             end
             
             rs << XmlNode.new('RateRequestTypes', 'ACCOUNT')
-            rs << XmlNode.new('PackageCount', packages.size)
-            packages.each do |pkg|
+            rs << XmlNode.new('PackageCount', 1) #packages.size) # See note below
+            # TODO: Multi-Ship actually requires multiple requests tied together with a Master Tracking Number. Ignore for now.
+            # packages.each do |pkg|
+              pkg = packages[0]
               rs << XmlNode.new('RequestedPackages') do |rps|
                 rps << XmlNode.new('Weight') do |tw|
                   tw << XmlNode.new('Units', imperial ? 'LB' : 'KG')
@@ -172,7 +198,7 @@ module ActiveMerchant
                   dimensions << XmlNode.new('Units', imperial ? 'IN' : 'CM')
                 end
               end
-            end
+            # end
             
           end
         end
@@ -239,10 +265,12 @@ module ActiveMerchant
             end
             
             rs << XmlNode.new('RateRequestTypes', 'ACCOUNT')
-            rs << XmlNode.new('PackageCount', packages.size)
+            rs << XmlNode.new('PackageCount', 1) #packages.size) See note below
             rs << XmlNode.new('PackageDetail','INDIVIDUAL_PACKAGES')
             # begin packages
-            packages.each do |pkg|
+            # TODO: Multi-Ship actually requires multiple requests tied together with a Master Tracking Number. Ignore for now.
+            # packages.each do |pkg|
+              pkg = packages[0]
               rs << XmlNode.new('RequestedPackageLineItems') do |rps|
                 rps << XmlNode.new('Weight') do |tw|
                   tw << XmlNode.new('Units', imperial ? 'LB' : 'KG')
@@ -256,7 +284,7 @@ module ActiveMerchant
                   dimensions << XmlNode.new('Units', imperial ? 'IN' : 'CM')
                 end
               end
-            end
+            # end
             # end packages
           end
         end
@@ -414,9 +442,12 @@ module ActiveMerchant
           image_data =  Base64::decode64(parts.get_text("Image").to_s)
         end
 
-        LabelResponse.new(success, message, Hash.from_xml(response),
-                          :tracking_number => tracking_number,
-                          :image_data => image_data)
+        LabelResponse.new(success, message, Hash.from_xml(response), {
+          :labels => [Label.new(
+            tracking_number,
+            image_data
+          )]
+        })
       end      
       
       def response_status_node(document)

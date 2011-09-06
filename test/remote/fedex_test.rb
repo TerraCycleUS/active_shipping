@@ -132,4 +132,20 @@ class FedExTest < Test::Unit::TestCase
     end
   end
   
+  def test_generate_labels
+    response = nil
+    
+    assert_nothing_raised do
+      response = @carrier.generate_label(
+        @locations[:new_york_with_company_name],
+        @locations[:beverly_hills_with_company_name],
+        @packages.values_at(:book, :wii), 
+        :test => true
+      )
+    end
+
+    assert response.success?
+    assert !response.labels.empty?
+  end
+  
 end
