@@ -308,6 +308,11 @@ module ActiveMerchant
                 payment_information << XmlNode.new('FreightCollect') do |fc|
                   fc << XmlNode.new('BillReceiver') do |bill_reciever|
                     bill_reciever << XmlNode.new('AccountNumber', options[:freight_collect][:receiver_account])
+                    if options[:freight_collect][:postal_code]
+                      bill_reciever << XmlNode.new('Address') do |address|
+                        address << XmlNode.new('PostalCode', options[:freight_collect][:postal_code])
+                      end
+                    end
                   end
                 end
               else
