@@ -353,9 +353,16 @@ module ActiveMerchant
                   package_weight << XmlNode.new("Weight", [value,0.1].max)
                 end
 
-                if package.options[:reference_numbers]
+                if package.options[:reference_numbers] && origin.country_code(:alpha2) == 'US'
                   package.options[:reference_numbers].each do |ref|
                     package_node << XmlNode.new("ReferenceNumber") do |reference_number|
+                      reference_number << XmlNode.new("Code", ref[:code]) if ref[:code]
+                      reference_number << XmlNode.new("Value", ref[:value]) if ref[:value]
+                    end
+                  end
+                elsif package.options[:reference_numbers] && origin.country_code(:alpha2) != 'US'
+                   package.options[:reference_numbers].each do |ref|
+                    shipment << XmlNode.new("ReferenceNumber") do |reference_number|
                       reference_number << XmlNode.new("Code", ref[:code]) if ref[:code]
                       reference_number << XmlNode.new("Value", ref[:value]) if ref[:value]
                     end
