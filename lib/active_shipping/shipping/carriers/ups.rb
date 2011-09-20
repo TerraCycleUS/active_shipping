@@ -119,18 +119,24 @@ module ActiveMerchant
         options = @options.merge(options)
         ship_confirm_response = do_ship_confirm(origin, destination, packages, options)
         xml = REXML::Document.new(ship_confirm_response)
+        logger.debug("#{self.class.to_s}#generate_label: ship confirm response: #{ship_confirm_response}")
         success = response_success?(xml)
-        if not success
-          warn(ship_confirm_response)
+        if success
+          logger.debug("#{self.class.to_s}#generate_label: ship confirm request was successful")
+        else
+          logger.warn(ship_confirm_response)
           raise xml.get_text('ShipmentConfirmResponse/Response/Error/ErrorDescription').to_s
         end
-              
+         
         ship_accept_response = do_ship_accept(ship_confirm_response, options)
         xml = REXML::Document.new(ship_accept_response)
+        logger.debug("#{self.class.to_s}#generate_label: ship accept response: #{ship_accept_response}")
         success = response_success?(xml)
         message = response_message(xml)
-        if not success
-          warn(ship_accept_response)
+        if success
+          logger.debug("#{self.class.to_s}#generate_label: ship accept request was successful: #{message}")
+        else
+          logger.warn(ship_accept_response)
           raise xml.get_text('ShipmentConfirmResponse/Response/Error/ErrorDescription').to_s
         end
 
@@ -144,12 +150,16 @@ module ActiveMerchant
         options = @options.update(options)
         packages = Array(packages)
         label_request = build_access_request + build_label_request(origin, destination, packages, options)
+        logger.debug("#{self.class.to_s}#do_ship_confirm label_request: #{label_request}")
+
         commit(:label_request, label_request, (options[:test] || false)) 
       end
 
       def do_ship_accept(ship_confirm_response, options)
         digest = parse_label_response(ship_confirm_response, options)
         label_accept_request = build_label_accept_request(digest, options)
+        logger.debug("#{self.class.to_s}#do_ship_accept label_accept_request: #{label_accept_request}")
+        
         commit(:label_accept, save_request(build_access_request + label_accept_request), (options[:test] || false))
       end
       

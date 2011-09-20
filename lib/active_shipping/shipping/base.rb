@@ -1,3 +1,6 @@
+require 'logger'
+require 'forwardable'
+
 module ActiveMerchant
   module Shipping
     module Base
@@ -8,6 +11,9 @@ module ActiveMerchant
         ActiveMerchant::Shipping::Carriers.all.find {|c| c.name.downcase == name.to_s.downcase} ||
           raise(NameError, "unknown carrier #{name}")
       end
+      
+      mattr_accessor :logger
+      self.logger = Logger.new(STDERR)
     end
   end
 end
