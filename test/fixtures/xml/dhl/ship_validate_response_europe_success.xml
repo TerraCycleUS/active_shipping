@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<res:ShipmentValidateResponse xmlns:res="http://www.dhl.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dhl.com ship-val-res.xsd">
+	<Response>
+		<ServiceHeader>
+			<MessageTime>2011-10-07T09:19:33+01:00</MessageTime>
+			<MessageReference>a548a12074ee4e8ea80300001e0b0001</MessageReference>
+			<SiteID>powerupxml</SiteID>
+		</ServiceHeader>
+	</Response>
+	<Note>
+		<ActionNote>Success</ActionNote>
+	</Note>
+	<AirwayBillNumber>4140594496</AirwayBillNumber>
+	<BillingCode>DSA</BillingCode>
+	<CurrencyCode>EUR</CurrencyCode>
+	<CourierMessage>Sample </CourierMessage>
+	<DestinationServiceArea>
+		<ServiceAreaCode>ELA</ServiceAreaCode>
+		<FacilityCode>ELA</FacilityCode>
+		<InboundSortCode/>
+	</DestinationServiceArea>
+	<OriginServiceArea>
+		<ServiceAreaCode>BRU</ServiceAreaCode>
+		<OutboundSortCode/>
+	</OriginServiceArea>
+	<Rated>N</Rated>
+	<WeightUnit>K</WeightUnit>
+	<ChargeableWeight>370.0</ChargeableWeight>
+	<DimensionalWeight>2.2</DimensionalWeight>
+	<CountryCode>BE</CountryCode>
+	<Barcodes>
+		<AWBBarCode>iVBORw0KGgoAAAANSUhEUgAAAYwAAABeAQMAAAAKdrGZAAAABlBMVEX///8AAABVwtN+AAAAaUlEQVR42mNkYGBIyL8w5a9P8IWJZmIBwSKbq2b+8laauYAtvSzgq5G3xsquKO9zbxeE9wR8vTdfaQEDAxMDyWBUy6iWUS2jWka1jGoZ1TKqZVTLqJZRLaNaRrWMahnVMqplVMuoFlIBAL0FFryEW9x8AAAAAElFTkSuQmCC</AWBBarCode>
+		<OriginDestnBarcode>iVBORw0KGgoAAAANSUhEUgAAATUAAABeAQMAAAB4lRFqAAAABlBMVEX///8AAABVwtN+AAAAU0lEQVR42mNkYGBIyL8whVsJRJx7Y82w5amONcPmqpm/bM1Tvxp9rsq/MPECAwMTA3FgVN2oulF1o+pG1Y2qG1U3qm5U3ai6UXWj6kbVjaqjhjoAwkkRvIJWgT4AAAAASUVORK5CYII=</OriginDestnBarcode>
+		<DHLRoutingBarCode>iVBORw0KGgoAAAANSUhEUgAAAcIAAABeAQMAAACKBYaKAAAABlBMVEX///8AAABVwtN+AAAAcklEQVR42u3LoQ2DQABG4f9Ijio0OcUm6M7ABCiQTXOiJ+sxBEFgHLY4CRs0QVBmwJG8J1/yGUnvzMe8mfsjag/fV1v8TBFUraZ8arBdtL5WOik/nx5u+YybC1KiqyGRSCQSiUQikUgkEolEIpFI5N3kH9EXFLzg6sMzAAAAAElFTkSuQmCC</DHLRoutingBarCode>
+	</Barcodes>
+	<Piece>2</Piece>
+	<Contents>Sample </Contents>
+	<Consignee>
+		<CompanyName>Company</CompanyName>
+		<AddressLine>455 N. Rexford Dr.</AddressLine>
+		<AddressLine>3rd Floor</AddressLine>
+		<City>Beverly Hills</City>
+		<Division>CA</Division>
+		<PostalCode>90210</PostalCode>
+		<CountryCode>US</CountryCode>
+		<CountryName>United States</CountryName>
+		<Contact>
+			<PersonName>Tim Case</PersonName>
+			<PhoneNumber>1-310-285-1013</PhoneNumber>
+		</Contact>
+	</Consignee>
+	<Shipper>
+		<ShipperID>272317228</ShipperID>
+		<CompanyName>Company</CompanyName>
+		<RegisteredAccount>272317228</RegisteredAccount>
+		<AddressLine>Rosenthaler Str. 40/41</AddressLine>
+		<City>Berlin</City>
+		<PostalCode>1800</PostalCode>
+		<CountryCode>BE</CountryCode>
+		<CountryName>Belgium</CountryName>
+		<Contact>
+			<PersonName>Prasanta Sinha</PersonName>
+			<PhoneNumber>11234-325423</PhoneNumber>
+			<PhoneExtension>45232</PhoneExtension>
+			<FaxNumber>11234325423</FaxNumber>
+			<Telex>454586</Telex>
+			<Email>
+				<From>dsa@us.dhl.com</From>
+				<To>dsa@us.dhl.com</To>
+				<Subject>subject</Subject>
+				<ReplyTo>String</ReplyTo>
+				<Body>yuy</Body>
+			</Email>
+		</Contact>
+	</Shipper>
+	<CustomerID>131297</CustomerID>
+	<ShipmentDate>2011-10-07</ShipmentDate>
+	<GlobalProductCode>0</GlobalProductCode>
+	<SpecialService>
+		<SpecialServiceType>S</SpecialServiceType>
+		<CommunicationType>P</CommunicationType>
+		<ChargeValue>33.10</ChargeValue>
+		<CurrencyCode>USD</CurrencyCode>
+	</SpecialService>
+	<Billing>
+		<ShipperAccountNumber>272317228</ShipperAccountNumber>
+		<ShippingPaymentType>S</ShippingPaymentType>
+		<DutyPaymentType>R</DutyPaymentType>
+	</Billing>
+	<DHLRoutingCode>US90210+00000000</DHLRoutingCode>
+	<DHLRoutingDataId>2L</DHLRoutingDataId>
+	<ProductContentCode>LOG</ProductContentCode>
+	<ProductShortName>LOGISTICS SERVICES</ProductShortName>
+	<InternalServiceCode/>
+	<DeliveryDateCode/>
+	<DeliveryTimeCode/>
+	<Pieces>
+		<Piece>
+			<PieceNumber>1</PieceNumber>
+			<Depth>19</Depth>
+			<Width>14</Width>
+			<Height>2</Height>
+			<Weight>0.25</Weight>
+			<PackageType>EE</PackageType>
+			<DimWeight>0.106400</DimWeight>
+			<DataIdentifier>J</DataIdentifier>
+			<LicensePlate>JD011000000000047093</LicensePlate>
+			<LicensePlateBarCode>iVBORw0KGgoAAAANSUhEUgAAAZYAAABeAQMAAAA6+qC4AAAABlBMVEX///8AAABVwtN+AAAAZ0lEQVR42u3LoRVAUACG0Z9AUhREU1jBDCbQJUfwGllSnPO2eWOgkXSFGTThu/16ktqoW7ax6XNnQhMfgX1MWsmrFVgl5i7TK9uLweX9fK7TKPn6jsPhcDgcDofD4XA4HA6Hw/nTeQHjcxS8QkokKQAAAABJRU5ErkJggg==</LicensePlateBarCode>
+		</Piece>
+		<Piece>
+			<PieceNumber>2</PieceNumber>
+			<Depth>38</Depth>
+			<Width>25</Width>
+			<Height>11</Height>
+			<Weight>0.12</Weight>
+			<PackageType>EE</PackageType>
+			<DimWeight>2.090000</DimWeight>
+			<DataIdentifier>J</DataIdentifier>
+			<LicensePlate>JD011000000000047094</LicensePlate>
+			<LicensePlateBarCode>iVBORw0KGgoAAAANSUhEUgAAAZYAAABeAQMAAAA6+qC4AAAABlBMVEX///8AAABVwtN+AAAAZ0lEQVR42u3LoRFAYACG4Y9AUhQUxzZmMIEuOcEfZUlxZwwbGAMJSVeYQRPepz+WpMqrh7Utm3Q2rvEPZ3xMmMsq5IwKzJ2FV7QlcTbt/bl0rWTrOw6Hw+FwOBwOh8PhcDgcDudP5wXhdRS8yvsB9wAAAABJRU5ErkJggg==</LicensePlateBarCode>
+		</Piece>
+	</Pieces>
+</res:ShipmentValidateResponse>

@@ -1,20 +1,23 @@
 module ActiveMerchant #:nodoc:
   module Shipping #:nodoc:
     class Location
-      ADDRESS_TYPES = %w{residential commercial po_box}
       
       attr_reader :options,
                   :country,
                   :postal_code,
                   :province,
                   :city,
-                  :name,
                   :address1,
                   :address2,
                   :address3,
                   :phone,
                   :fax,
-                  :address_type
+                  :address_type,
+                  :name,
+                  :attention_name,
+                  :company_name,
+                  :tax_id_number,
+                  :email
       
       alias_method :zip, :postal_code
       alias_method :postal, :postal_code
@@ -29,18 +32,17 @@ module ActiveMerchant #:nodoc:
         @postal_code = options[:postal_code] || options[:postal] || options[:zip]
         @province = options[:province] || options[:state] || options[:territory] || options[:region]
         @city = options[:city]
-        @name = options[:name]
         @address1 = options[:address1]
         @address2 = options[:address2]
         @address3 = options[:address3]
         @phone = options[:phone]
         @fax = options[:fax]
-        if options[:address_type].present?
-          @address_type = options[:address_type].to_s
-          unless ADDRESS_TYPES.include?(@address_type)
-            raise ArgumentError.new("address_type must be one of #{ADDRESS_TYPES.map(&:inspect).join(', ')}")
-          end
-        end
+        raise ArgumentError.new('address_type must be either "residential" or "commercial"') if options[:address_type] and not (["residential", "commercial", ""]).include?(options[:address_type].to_s)
+        @address_type = options[:address_type].nil? ? nil : options[:address_type].to_s
+        @name = options[:name]
+        @attention_name = options[:attention_name]
+        @company_name = options[:company_name]
+        @tax_id = options[:tax_id_number]
       end
       
       def self.from(object, options={})
@@ -73,7 +75,7 @@ module ActiveMerchant #:nodoc:
             end
           end
         end
-        attributes.delete(:address_type) unless ADDRESS_TYPES.include?(attributes[:address_type].to_s)
+        attributes.delete(:address_type) unless %w{residential commercial}.include?(attributes[:address_type].to_s)
         self.new(attributes.update(options))
       end
       
@@ -81,9 +83,8 @@ module ActiveMerchant #:nodoc:
         @country.nil? ? nil : @country.code(format).value
       end
       
-      def residential?; @address_type == 'residential' end
-      def commercial?; @address_type == 'commercial' end
-      def po_box?; @address_type == 'po_box' end
+      def residential?; (@address_type == 'residential') end
+      def commercial?; (@address_type == 'commercial') end
       
       def to_s
         prettyprint.gsub(/\n/, ' ')

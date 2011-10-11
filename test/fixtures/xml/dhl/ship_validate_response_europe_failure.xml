@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<res:ShipmentValidateErrorResponse xmlns:res="http://www.dhl.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dhl.com ship-val-err-res.xsd">
+	<Response>
+		<ServiceHeader>
+			<MessageTime>2011-10-07T10:17:10+01:00</MessageTime>
+			<MessageReference>a548a12074ee4e8eb58600001e400001</MessageReference>
+			<SiteID>powerupxml</SiteID>
+		</ServiceHeader>
+		<Status>
+			<ActionStatus/>
+			<Condition>
+				<ConditionCode>SV010a</ConditionCode>
+				<ConditionData>  Service information not available.                    Check shipper postal code and city. For assistance                    call DHL customer services.</ConditionData>
+			</Condition>
+		</Status>
+	</Response>
+</res:ShipmentValidateErrorResponse>
