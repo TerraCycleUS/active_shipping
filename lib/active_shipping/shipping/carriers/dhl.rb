@@ -330,31 +330,12 @@ module ActiveMerchant
         result
       end
       
-      def parse_label_response(response, options)
+      def parse_label_response(response, options ={})
 
         xml = REXML::Document.new(response).root
-        airway_bill_number = xml.elements["//AirwayBillNumber"].get_text
-        
-        raise a.inspect
-        # root_node = xml.elements['ProcessShipmentReply']
         success = response_success?(xml)
         message = response_message(xml) unless success
-        if success
-            # tracking_number
-            # image_data
-            # tracking_number = 
-        #   shipment_details = root_node.elements['CompletedShipmentDetail']
-        #   completed_package_details = shipment_details.elements['CompletedPackageDetails']
-        #   tracking_details = completed_package_details.elements['TrackingIds']
-        #   tracking_number = tracking_details.get_text('TrackingNumber').value
-        #   label_details = completed_package_details.elements['Label']
-        #   parts = label_details.elements['Parts']          
-        #   image_data =  Base64::decode64(parts.get_text("Image").to_s)
-        end
-        
-        LabelResponse.new(success, message, Hash.from_xml(response),
-                          :tracking_number => tracking_number,
-                          :image_data => 'image_data')
+        DhlLabelResponse.new(success, message, Hash.from_xml(response))
       end      
       
       def response_success?(document)
