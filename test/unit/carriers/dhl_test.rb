@@ -89,7 +89,9 @@ class DhlTest < Test::Unit::TestCase
     assert_equal '272317228', parsed_label.account_number
     assert_equal '370.0', parsed_label.weight
     assert_equal 'K', parsed_label.weight_unit
-
+    assert_equal 'iVBORw0KGgoAAAANSUhEUgAAAYwAAABeAQMAAAAKdrGZAAAABlBMVEX///8AAABVwtN+AAAAaUlEQVR42mNkYGBIyL8w5a9P8IWJZmIBwSKbq2b+8laauYAtvSzgq5G3xsquKO9zbxeE9wR8vTdfaQEDAxMDyWBUy6iWUS2jWka1jGoZ1TKqZVTLqJZRLaNaRrWMahnVMqplVMuoFlIBAL0FFryEW9x8AAAAAElFTkSuQmCC', parsed_label.awb_barcode
+    assert_equal 'iVBORw0KGgoAAAANSUhEUgAAATUAAABeAQMAAAB4lRFqAAAABlBMVEX///8AAABVwtN+AAAAU0lEQVR42mNkYGBIyL8whVsJRJx7Y82w5amONcPmqpm/bM1Tvxp9rsq/MPECAwMTA3FgVN2oulF1o+pG1Y2qG1U3qm5U3ai6UXWj6kbVjaqjhjoAwkkRvIJWgT4AAAAASUVORK5CYII=', parsed_label.origin_destination_barcode
+    assert_equal 'iVBORw0KGgoAAAANSUhEUgAAAcIAAABeAQMAAACKBYaKAAAABlBMVEX///8AAABVwtN+AAAAcklEQVR42u3LoQ2DQABG4f9Ijio0OcUm6M7ABCiQTXOiJ+sxBEFgHLY4CRs0QVBmwJG8J1/yGUnvzMe8mfsjag/fV1v8TBFUraZ8arBdtL5WOik/nx5u+YybC1KiqyGRSCQSiUQikUgkEolEIpFI5N3kH9EXFLzg6sMzAAAAAElFTkSuQmCC', parsed_label.dhl_routing_barcode
 
   end
 
