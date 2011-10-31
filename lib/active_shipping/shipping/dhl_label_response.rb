@@ -9,7 +9,7 @@ module ActiveMerchant #:nodoc:
       :receiver_city, :receiver_division, :receiver_postal_code, :receiver_country,
       :receiver_contact_name, :receiver_contact_phone, :outbound_sort_code, :destination_facility_code,
       :inbound_sort_code, :message_reference, :account_number, :weight, :weight_unit,
-      :awb_barcode, :origin_destination_barcode, :dhl_routing_barcode
+      :awb_barcode, :origin_destination_barcode, :dhl_routing_barcode, :airway_bill_number
 
       def initialize(success, message, res = {}, options = {})
 
@@ -57,6 +57,7 @@ module ActiveMerchant #:nodoc:
         @awb_barcode = res['Barcodes']['AWBBarCode']
         @origin_destination_barcode = res['Barcodes']['OriginDestnBarcode']
         @dhl_routing_barcode = res['Barcodes']['DHLRoutingBarCode']
+        @airway_bill_number = res['AirwayBillNumber']
       end
       
       def reference_data

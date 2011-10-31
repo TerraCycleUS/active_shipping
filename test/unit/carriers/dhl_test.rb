@@ -96,6 +96,7 @@ class DhlTest < Test::Unit::TestCase
     assert_equal 'C', parsed_label.service_features_code
     assert_equal "NOEEI 30.37(a)", parsed_label.eei
     assert_equal "1/1", parsed_label.piece
+    assert_equal "4140594496", parsed_label.airway_bill_number
   end
 
   # def test_generate_label
