@@ -92,7 +92,10 @@ class DhlTest < Test::Unit::TestCase
     assert_equal 'iVBORw0KGgoAAAANSUhEUgAAAYwAAABeAQMAAAAKdrGZAAAABlBMVEX///8AAABVwtN+AAAAaUlEQVR42mNkYGBIyL8w5a9P8IWJZmIBwSKbq2b+8laauYAtvSzgq5G3xsquKO9zbxeE9wR8vTdfaQEDAxMDyWBUy6iWUS2jWka1jGoZ1TKqZVTLqJZRLaNaRrWMahnVMqplVMuoFlIBAL0FFryEW9x8AAAAAElFTkSuQmCC', parsed_label.awb_barcode
     assert_equal 'iVBORw0KGgoAAAANSUhEUgAAATUAAABeAQMAAAB4lRFqAAAABlBMVEX///8AAABVwtN+AAAAU0lEQVR42mNkYGBIyL8whVsJRJx7Y82w5amONcPmqpm/bM1Tvxp9rsq/MPECAwMTA3FgVN2oulF1o+pG1Y2qG1U3qm5U3ai6UXWj6kbVjaqjhjoAwkkRvIJWgT4AAAAASUVORK5CYII=', parsed_label.origin_destination_barcode
     assert_equal 'iVBORw0KGgoAAAANSUhEUgAAAcIAAABeAQMAAACKBYaKAAAABlBMVEX///8AAABVwtN+AAAAcklEQVR42u3LoQ2DQABG4f9Ijio0OcUm6M7ABCiQTXOiJ+sxBEFgHLY4CRs0QVBmwJG8J1/yGUnvzMe8mfsjag/fV1v8TBFUraZ8arBdtL5WOik/nx5u+YybC1KiqyGRSCQSiUQikUgkEolEIpFI5N3kH9EXFLzg6sMzAAAAAElFTkSuQmCC', parsed_label.dhl_routing_barcode
-
+    assert_equal "YYYY-MM-DD", parsed_label.reference_data
+    assert_equal 'C', parsed_label.service_features_code
+    assert_equal "NOEEI 30.37(a)", parsed_label.eei
+    assert_equal "1/1", parsed_label.piece
   end
 
   # def test_generate_label

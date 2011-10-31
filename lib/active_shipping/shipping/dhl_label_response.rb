@@ -58,22 +58,23 @@ module ActiveMerchant #:nodoc:
         @origin_destination_barcode = res['Barcodes']['OriginDestnBarcode']
         @dhl_routing_barcode = res['Barcodes']['DHLRoutingBarCode']
       end
-    end
-    
-    def reference_data
-      "YYYY-MM-DD"
-    end
-    
-    def service_features_code
-      "C"
-    end
-    
-    def eei
-      "NOEEI 30.37(a)"
-    end
-    
-    def piece
-      "1/1"
-    end
+      
+      def reference_data
+        "YYYY-MM-DD"
+      end
+
+      def service_features_code
+        "C"
+      end
+
+      def eei
+        "NOEEI 30.37(a)"
+      end
+
+      def piece
+        "1/1"
+      end
+      
+    end    
   end
 end
