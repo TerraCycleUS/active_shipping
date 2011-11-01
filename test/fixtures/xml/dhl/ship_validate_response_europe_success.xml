@@ -107,17 +107,5 @@
 			<LicensePlate>JD011000000000047093</LicensePlate>
 			<LicensePlateBarCode>iVBORw0KGgoAAAANSUhEUgAAAZYAAABeAQMAAAA6+qC4AAAABlBMVEX///8AAABVwtN+AAAAZ0lEQVR42u3LoRVAUACG0Z9AUhREU1jBDCbQJUfwGllSnPO2eWOgkXSFGTThu/16ktqoW7ax6XNnQhMfgX1MWsmrFVgl5i7TK9uLweX9fK7TKPn6jsPhcDgcDofD4XA4HA6Hw/nTeQHjcxS8QkokKQAAAABJRU5ErkJggg==</LicensePlateBarCode>
 		</Piece>
-		<Piece>
-			<PieceNumber>2</PieceNumber>
-			<Depth>38</Depth>
-			<Width>25</Width>
-			<Height>11</Height>
-			<Weight>0.12</Weight>
-			<PackageType>EE</PackageType>
-			<DimWeight>2.090000</DimWeight>
-			<DataIdentifier>J</DataIdentifier>
-			<LicensePlate>JD011000000000047094</LicensePlate>
-			<LicensePlateBarCode>iVBORw0KGgoAAAANSUhEUgAAAZYAAABeAQMAAAA6+qC4AAAABlBMVEX///8AAABVwtN+AAAAZ0lEQVR42u3LoRFAYACG4Y9AUhQUxzZmMIEuOcEfZUlxZwwbGAMJSVeYQRPepz+WpMqrh7Utm3Q2rvEPZ3xMmMsq5IwKzJ2FV7QlcTbt/bl0rWTrOw6Hw+FwOBwOh8PhcDgcDudP5wXhdRS8yvsB9wAAAABJRU5ErkJggg==</LicensePlateBarCode>
-		</Piece>
 	</Pieces>
 </res:ShipmentValidateResponse>

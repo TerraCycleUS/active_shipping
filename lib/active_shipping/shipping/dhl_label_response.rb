@@ -9,8 +9,8 @@ module ActiveMerchant #:nodoc:
       :receiver_city, :receiver_division, :receiver_postal_code, :receiver_country,
       :receiver_contact_name, :receiver_contact_phone, :outbound_sort_code, :destination_facility_code,
       :inbound_sort_code, :message_reference, :account_number, :weight, :weight_unit,
-      :awb_barcode, :origin_destination_barcode, :dhl_routing_barcode, :airway_bill_number
-
+      :awb_barcode, :origin_destination_barcode, :dhl_routing_barcode, :airway_bill_number,
+      :dhl_routing_code, :dhl_routing_data_id, :data_identifier, :license_plate
       def initialize(success, message, res = {}, options = {})
 
         res = res["ShipmentValidateResponse"]
@@ -58,6 +58,10 @@ module ActiveMerchant #:nodoc:
         @origin_destination_barcode = res['Barcodes']['OriginDestnBarcode']
         @dhl_routing_barcode = res['Barcodes']['DHLRoutingBarCode']
         @airway_bill_number = res['AirwayBillNumber']
+        @dhl_routing_code = res['DHLRoutingCode']
+        @dhl_routing_data_id = res['DHLRoutingDataId']
+        @data_identifier = res['Pieces']['Piece']['DataIdentifier']
+        @license_plate = res['Pieces']['Piece']['LicensePlate']
       end
       
       def reference_data
