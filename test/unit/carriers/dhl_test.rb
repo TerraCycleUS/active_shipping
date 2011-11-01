@@ -96,11 +96,11 @@ class DhlTest < Test::Unit::TestCase
     assert_equal 'C', parsed_label.service_features_code
     assert_equal "NOEEI 30.37(a)", parsed_label.eei
     assert_equal "1/1", parsed_label.piece
-    assert_equal "4140594496", parsed_label.airway_bill_number
+    assert_equal "41 4059 4496", parsed_label.airway_bill_number
     assert_equal "US90210+00000000", parsed_label.dhl_routing_code
     assert_equal '2L', parsed_label.dhl_routing_data_id
     assert_equal 'J', parsed_label.data_identifier
-    assert_equal 'JD011000000000047093', parsed_label.license_plate
+    assert_equal 'JD011 000 0000 0004 7093', parsed_label.license_plate
   end
 
   # def test_generate_label

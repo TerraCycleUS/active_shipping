@@ -57,11 +57,35 @@ module ActiveMerchant #:nodoc:
         @awb_barcode = res['Barcodes']['AWBBarCode']
         @origin_destination_barcode = res['Barcodes']['OriginDestnBarcode']
         @dhl_routing_barcode = res['Barcodes']['DHLRoutingBarCode']
-        @airway_bill_number = res['AirwayBillNumber']
+        @raw_airway_bill_number = res['AirwayBillNumber']
         @dhl_routing_code = res['DHLRoutingCode']
         @dhl_routing_data_id = res['DHLRoutingDataId']
         @data_identifier = res['Pieces']['Piece']['DataIdentifier']
-        @license_plate = res['Pieces']['Piece']['LicensePlate']
+        @raw_license_plate = res['Pieces']['Piece']['LicensePlate']
+      end
+      
+      def airway_bill_number
+        "#{@raw_airway_bill_number[0..1]} #{@raw_airway_bill_number[2..5]} #{@raw_airway_bill_number[6..10]}"
+      end
+      
+      #Transforms license plate number into the format needed for labels
+      #It's basically the first 5 digits
+      #Then multiples of 4 grouped from the end of the string with the remainder
+      #sitting between the first 5 digit chunk and the last chunk of 4 digit groupings
+      #yeah it's weird but that's how dhl rolls
+      def license_plate
+        raw = @raw_license_plate
+        iac = raw[0..4]
+        raw = @raw_license_plate[5..raw.length]
+        res= []
+        (raw.length / 4).times do
+          slice = raw.slice((raw.length - 4), raw.length)
+          res <<  slice
+          raw = raw.gsub(slice, '')
+        end
+        remainder = raw.gsub(res.reverse.join, '')
+        res = [iac, remainder, res.reverse].flatten.join(" ")
+        res
       end
       
       def reference_data
