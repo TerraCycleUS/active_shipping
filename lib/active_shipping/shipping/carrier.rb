@@ -48,6 +48,9 @@ module ActiveMerchant
       end
       
       protected
+      def logger
+        Base.logger
+      end
       
       def node_text_or_nil(xml_node)
         xml_node ? xml_node.text : nil
