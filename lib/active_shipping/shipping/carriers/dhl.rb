@@ -328,32 +328,37 @@ module ActiveMerchant
         result =  parse_label_response(response, options)
         result
       end
-      
+
       def parse_label_response(response, options ={})
 
         xml = REXML::Document.new(response).root
         success = response_success?(xml)
-        message = response_message(xml) unless success
+        message = response_message(response) unless success
         DhlLabelResponse.new(success, message, Hash.from_xml(response))
-      end      
-      
+      end
+
       def response_success?(document)
-        %w{Success}.include? response_status_node(document).get_text('ActionNote').to_s
+        if response_status_node(document)
+          %w{Success}.include? response_status_node(document).get_text('ActionNote').to_s
+        else
+          false
+        end
       end
-      
+
       def response_message(document)
-        # response_node = response_status_node(document)
-        # "#{response_status_node(document).get_text('Severity').to_s} - #{response_node.get_text('Code').to_s}: #{response_node.get_text('Message').to_s}"
+        res = Hash.from_xml(document)
+        res = res["ShipmentValidateErrorResponse"]
+        "#{res['Response']['Status']['Condition']['ConditionCode']} - #{res['Response']['Status']['Condition']['ConditionData']}"
       end
-      
+
       def response_status_node(document)
         document.elements['/*/Note/']
       end
-      
+
       # def parse_label_response(response, options)
       #   return true
       # end
-      
+
       protected
 
       def build_instruct
@@ -393,7 +398,7 @@ module ActiveMerchant
         end
         xml_request.target!
       end
-      
+
       def build_location(target, location, options = {})
         target.CompanyName location.company_name
         target.RegisteredAccount options[:shipper_id] unless options[:shipper_id].nil?
@@ -410,7 +415,7 @@ module ActiveMerchant
         end
         target
       end
-      
+
       def build_ship_location(target, location, options = {})
         target.CompanyName location.company_name
         target.RegisteredAccount options[:shipper_id] unless options[:shipper_id].nil?
@@ -427,7 +432,7 @@ module ActiveMerchant
         end
         target
       end
-      
+
       def build_shipper(origin, options)
         xml_request = Builder::XmlMarkup.new
         xml_request.Shipper do |shipper|
@@ -436,7 +441,7 @@ module ActiveMerchant
         end
         xml_request.target!
       end
-      
+
       def build_commodity
         xml_request = Builder::XmlMarkup.new
         xml_request.Commodity do |com|

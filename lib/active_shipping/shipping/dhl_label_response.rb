@@ -14,61 +14,64 @@ module ActiveMerchant #:nodoc:
       def initialize(success, message, res = {}, options = {})
 
         res = res["ShipmentValidateResponse"]
-        @success = res['Note']['ActionNote'] == 'Success'
-        @product_name = res['ProductShortName']
-        @product_content_code = res['ProductContentCode']
-        @unit_id = res['CustomerID']
-        @shipment_date = res['ShipmentDate']
-        @service_area_code = res['OriginServiceArea']['ServiceAreaCode']
-        @shipper_company_name = res['Shipper']['CompanyName']
-        if res['Shipper']['AddressLine'].respond_to?(:each)
-          @shipper_address_1 = res['Shipper']['AddressLine'].first
-          @shipper_address_2 = res['Shipper']['AddressLine'].last
-        else
+        @success = success
+        @message = message
+        if self.success?
+          @product_name = res['ProductShortName']
+          @product_content_code = res['ProductContentCode']
+          @unit_id = res['CustomerID']
+          @shipment_date = res['ShipmentDate']
+          @service_area_code = res['OriginServiceArea']['ServiceAreaCode']
+          @shipper_company_name = res['Shipper']['CompanyName']
+          if res['Shipper']['AddressLine'].respond_to?(:each)
+            @shipper_address_1 = res['Shipper']['AddressLine'].first
+            @shipper_address_2 = res['Shipper']['AddressLine'].last
+          else
+            @shipper_address_1 = res['Shipper']['AddressLine']
+          end
           @shipper_address_1 = res['Shipper']['AddressLine']
+          @shipper_city = res['Shipper']['City']
+          @shipper_division = res['Shipper']['Division'] || ''
+          @shipper_postal_code = res['Shipper']['PostalCode']
+          @shipper_country = res['Shipper']['CountryName']
+          @shipper_contact_name = res['Shipper']['Contact']['PersonName']
+          @shipper_contact_phone = res['Shipper']['Contact']['PhoneNumber']
+          @origin_service_area = res['DestinationServiceArea']['ServiceAreaCode']
+          @receiver_company_name = res['Consignee']['CompanyName']
+          if res['Consignee']['AddressLine'].respond_to?(:each)
+            @receiver_address_1 = res['Consignee']['AddressLine'].first
+            @receiver_address_2 = res['Consignee']['AddressLine'].last
+          else
+            @receiver_address_1 = res['Consignee']['AddressLine']
+          end
+          @receiver_city = res['Consignee']['City']
+          @receiver_division = res['Consignee']['Division']
+          @receiver_postal_code = res['Consignee']['PostalCode']
+          @receiver_country = res['Consignee']['CountryName']
+          @receiver_contact_name = res['Consignee']['Contact']['PersonName']
+          @receiver_contact_phone = res['Consignee']['Contact']['PhoneNumber']
+          @outbound_sort_code = res['OriginServiceArea']['OutboundSortCode']  || ''
+          @destination_facility_code = res['DestinationServiceArea']['FacilityCode']
+          @inbound_sort_code = res['DestinationServiceArea']['InboundSortCode'] || ''
+          @message_reference = res['Response']['ServiceHeader']['MessageReference']
+          @account_number = res['Billing']['ShipperAccountNumber']
+          @weight = res['ChargeableWeight']
+          @weight_unit = res['WeightUnit']
+          @awb_barcode = res['Barcodes']['AWBBarCode']
+          @origin_destination_barcode = res['Barcodes']['OriginDestnBarcode']
+          @dhl_routing_barcode = res['Barcodes']['DHLRoutingBarCode']
+          @raw_airway_bill_number = res['AirwayBillNumber']
+          @dhl_routing_code = res['DHLRoutingCode']
+          @dhl_routing_data_id = res['DHLRoutingDataId']
+          @data_identifier = res['Pieces']['Piece']['DataIdentifier']
+          @raw_license_plate = res['Pieces']['Piece']['LicensePlate']
         end
-        @shipper_address_1 = res['Shipper']['AddressLine']
-        @shipper_city = res['Shipper']['City']
-        @shipper_division = res['Shipper']['Division'] || ''
-        @shipper_postal_code = res['Shipper']['PostalCode']
-        @shipper_country = res['Shipper']['CountryName']
-        @shipper_contact_name = res['Shipper']['Contact']['PersonName']
-        @shipper_contact_phone = res['Shipper']['Contact']['PhoneNumber']
-        @origin_service_area = res['DestinationServiceArea']['ServiceAreaCode']
-        @receiver_company_name = res['Consignee']['CompanyName']
-        if res['Consignee']['AddressLine'].respond_to?(:each)
-          @receiver_address_1 = res['Consignee']['AddressLine'].first
-          @receiver_address_2 = res['Consignee']['AddressLine'].last
-        else
-          @receiver_address_1 = res['Consignee']['AddressLine']
-        end
-        @receiver_city = res['Consignee']['City']
-        @receiver_division = res['Consignee']['Division']
-        @receiver_postal_code = res['Consignee']['PostalCode']
-        @receiver_country = res['Consignee']['CountryName']
-        @receiver_contact_name = res['Consignee']['Contact']['PersonName']
-        @receiver_contact_phone = res['Consignee']['Contact']['PhoneNumber']
-        @outbound_sort_code = res['OriginServiceArea']['OutboundSortCode']  || ''
-        @destination_facility_code = res['DestinationServiceArea']['FacilityCode']
-        @inbound_sort_code = res['DestinationServiceArea']['InboundSortCode'] || ''
-        @message_reference = res['Response']['ServiceHeader']['MessageReference']
-        @account_number = res['Billing']['ShipperAccountNumber']
-        @weight = res['ChargeableWeight']
-        @weight_unit = res['WeightUnit']
-        @awb_barcode = res['Barcodes']['AWBBarCode']
-        @origin_destination_barcode = res['Barcodes']['OriginDestnBarcode']
-        @dhl_routing_barcode = res['Barcodes']['DHLRoutingBarCode']
-        @raw_airway_bill_number = res['AirwayBillNumber']
-        @dhl_routing_code = res['DHLRoutingCode']
-        @dhl_routing_data_id = res['DHLRoutingDataId']
-        @data_identifier = res['Pieces']['Piece']['DataIdentifier']
-        @raw_license_plate = res['Pieces']['Piece']['LicensePlate']
       end
-      
+
       def airway_bill_number
         "#{@raw_airway_bill_number[0..1]} #{@raw_airway_bill_number[2..5]} #{@raw_airway_bill_number[6..10]}"
       end
-      
+
       #Transforms license plate number into the format needed for labels
       #It's basically the first 5 digits
       #Then multiples of 4 grouped from the end of the string with the remainder
@@ -88,11 +91,15 @@ module ActiveMerchant #:nodoc:
         res = [iac, remainder, res.reverse].flatten.join(" ")
         res
       end
-      
+
       def success?
         @success
       end
-      
+
+      def message
+        @message
+      end
+
       def reference_data
         "YYYY-MM-DD"
       end
@@ -108,7 +115,7 @@ module ActiveMerchant #:nodoc:
       def piece
         "1/1"
       end
-      
-    end    
+
+    end
   end
 end

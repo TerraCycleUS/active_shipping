@@ -17,7 +17,7 @@ class DhlTest < Test::Unit::TestCase
     :postal_code => '10178',
     :phone => '1-613-580-2400',
     :fax => '1-613-580-2495',
-    :country => 'Germany',
+    :country => 'Belgium',
     :name => 'Michael Schumacher')
     
     @germany2 = Location.new(:country_code => 'DE',
@@ -28,7 +28,7 @@ class DhlTest < Test::Unit::TestCase
     :postal_code => '10117',
     :phone => '1-613-580-2400',
     :fax => '1-613-580-2495',
-    :country => 'Germany',
+    :country => 'Belgium',
     :name => 'Michael Schumacher')
     
     @belgium1 = Location.new(:country_code => "BE",
@@ -71,10 +71,13 @@ class DhlTest < Test::Unit::TestCase
                             @packages.values_at(:book, :wii), {:payment_type => 'S',
                                                                :package_type => 'EE',
                                                                :global_product_code => 'N',
+                                                               :local_product_code => 'C',
                                                                :door_to => 'DD',
                                                                :content => 'Sample ',
                                                                :shipper_id => '272317228'})
     assert_instance_of DhlLabelResponse, response
+    assert response.success?
+    assert_nil response.message
   end
 
   def test_parse_response
@@ -125,5 +128,23 @@ class DhlTest < Test::Unit::TestCase
     assert_equal 'J', parsed_label.data_identifier
     assert_equal 'JD011 000 0000 0004 7093', parsed_label.license_plate
   end
-
+  
+  def test_failure_response
+    mock_response = xml_fixture('dhl/ship_validate_response_europe_failure')
+    @carrier.stubs(:commit).returns(mock_response)
+    response = @carrier.generate_label(@germany1,
+                            @germany2,
+                            @packages.values_at(:book, :wii), {:payment_type => 'S',
+                                                               :package_type => 'EE',
+                                                               :global_product_code => 'N',
+                                                               :local_product_code => 'C',
+                                                               :door_to => 'DD',
+                                                               :content => 'Sample ',
+                                                               :shipper_id => '272317228'})
+    assert_instance_of DhlLabelResponse, response
+    assert !response.success?
+    assert_match /SV011a/, response.message
+    assert_match /Cannot determine destination service/, response.message
+    
+  end
 end

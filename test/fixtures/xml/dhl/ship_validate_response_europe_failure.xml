@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<res:ShipmentValidateErrorResponse xmlns:res="http://www.dhl.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dhl.com ship-val-err-res.xsd">
+	<Response>
+		<ServiceHeader>
+			<MessageTime>2011-11-08T13:29:21+01:00</MessageTime>
+			<MessageReference>a548a1203e794eb920a0000000860001</MessageReference>
+			<SiteID>powerupxml</SiteID>
+		</ServiceHeader>
+		<Status>
+			<ActionStatus/>
+			<Condition>
+				<ConditionCode>SV011a</ConditionCode>
+				<ConditionData>  Cannot determine destination service.
+                    Please check recipient information or complete a
+                    manual airwaybill. For pickup assistance call DHL
+                    customer services.</ConditionData>
+			</Condition>
+		</Status>
+	</Response>
+</res:ShipmentValidateErrorResponse>
