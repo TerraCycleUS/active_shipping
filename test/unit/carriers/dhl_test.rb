@@ -68,7 +68,7 @@ class DhlTest < Test::Unit::TestCase
     @carrier.stubs(:commit).returns(mock_response)
     response = @carrier.generate_label(@germany1,
                             @germany2,
-                            @packages.values_at(:book, :wii), {:payment_type => 'S',
+                            @packages.values_at(:book, :wii), {:payment_type => 'R',
                                                                :package_type => 'EE',
                                                                :global_product_code => 'N',
                                                                :local_product_code => 'C',
