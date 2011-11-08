@@ -14,6 +14,7 @@ module ActiveMerchant #:nodoc:
       def initialize(success, message, res = {}, options = {})
 
         res = res["ShipmentValidateResponse"]
+        @success = res['Note']['ActionNote'] == 'Success'
         @product_name = res['ProductShortName']
         @product_content_code = res['ProductContentCode']
         @unit_id = res['CustomerID']
@@ -86,6 +87,10 @@ module ActiveMerchant #:nodoc:
         remainder = raw.gsub(res.reverse.join, '')
         res = [iac, remainder, res.reverse].flatten.join(" ")
         res
+      end
+      
+      def success?
+        @success
       end
       
       def reference_data

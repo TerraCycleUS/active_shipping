@@ -89,6 +89,7 @@ module ActiveMerchant
                                       :phone => '1-613-580-2400',
                                       :fax => '1-613-580-2495'),
         :beverly_hills => Location.new(
+                                      :company_name => 'Acme Corp',
                                       :country => 'US',
                                       :state => 'CA',
                                       :city => 'Beverly Hills',
@@ -96,7 +97,8 @@ module ActiveMerchant
                                       :address2 => '3rd Floor',
                                       :zip => '90210',
                                       :phone => '1-310-285-1013',
-                                      :fax => '1-310-275-8159'),
+                                      :fax => '1-310-275-8159',
+                                      :name => 'John Hamm'),
         :real_home_as_commercial => Location.new(
                                       :country => 'US',
                                       :city => 'Tampa',

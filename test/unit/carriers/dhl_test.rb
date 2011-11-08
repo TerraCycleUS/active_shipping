@@ -9,15 +9,47 @@ class DhlTest < Test::Unit::TestCase
     :account_number => '272317228',
     :test => true)
 
-    @germany = Location.new(:country => 'BE',
-    :company_name => 'Company',
+    @germany1 = Location.new(:country_code => 'DE',
+    :company_name => 'Starbucks',
     :state => '',
     :city => 'Berlin',
     :address1 => 'Rosenthaler Str. 40/41',
-    :postal_code => '180asdfas0',
+    :postal_code => '10178',
     :phone => '1-613-580-2400',
     :fax => '1-613-580-2495',
-    :country => 'Belgium')
+    :country => 'Germany',
+    :name => 'Michael Schumacher')
+    
+    @germany2 = Location.new(:country_code => 'DE',
+    :company_name => 'Starbucks',
+    :state => '',
+    :city => 'Berlin',
+    :address1 => 'Friedrichstr. 61',
+    :postal_code => '10117',
+    :phone => '1-613-580-2400',
+    :fax => '1-613-580-2495',
+    :country => 'Germany',
+    :name => 'Michael Schumacher')
+    
+    @belgium1 = Location.new(:country_code => "BE",
+    :company_name => "McDonalds",
+    :city => "Brussels",
+    :address1 => "Elsensesteenweg 21",
+    :postal_code => '1050',
+    :phone => '32 2 513 51 93',
+    :fax => '32 2 513 51 93',
+    :country => 'Belgium',
+    :name => 'Michael Schumacher')
+    
+    @belgium2 = Location.new(:country_code => "BE",
+    :company_name => "McDonalds",
+    :city => "Brussels",
+    :address1 => "Place de la Bourse 3",
+    :postal_code => '1000',
+    :phone => '32 2 513 42 13',
+    :fax => '32 2 513 42 13',
+    :country => 'Belgium',
+    :name => 'Michael Schumacher')
   end
 
   def test_initialize_options_requirements
@@ -30,35 +62,26 @@ class DhlTest < Test::Unit::TestCase
     :test => true)}
   end
 
-  # def test_generate_label
-  #   expected_request = xml_fixture('dhl/ship_validate_request_europe')
-  #   mock_response = xml_fixture('dhl/ship_validate_response_europe')
-  #   Time.any_instance.expects(:to_xml_value).returns("2009-07-20T12:01:55-04:00")
-  #   @carrier.expects(:commit).with {|request, test_mode| Hash.from_xml(request) == Hash.from_xml(expected_request) && test_mode}.returns(mock_response)
-  # end
 
   def test_generate_label
-
-
-
-    # mock_response = xml_fixture('dhl/ship_validate_response_europe')
-    # @carrier.stubs(:commit).returns(mock_response)
-    # response = @carrier.generate_label(@germany,
-    #                         @locations[:beverly_hills],
-    #                         @packages.values_at(:book, :wii), {:payment_type => 'S',
-    #                                                            :package_type => 'EE',
-    #                                                            :global_product_code => '0',
-    #                                                            :door_to => 'DD',
-    #                                                            :content => 'Sample ',
-    #                                                            :shipper_id => '272317228'})
-    # assert_instance_of LabelResponse, response
+    mock_response = xml_fixture('dhl/ship_validate_response_europe_success')
+    @carrier.stubs(:commit).returns(mock_response)
+    response = @carrier.generate_label(@germany1,
+                            @germany2,
+                            @packages.values_at(:book, :wii), {:payment_type => 'S',
+                                                               :package_type => 'EE',
+                                                               :global_product_code => 'N',
+                                                               :door_to => 'DD',
+                                                               :content => 'Sample ',
+                                                               :shipper_id => '272317228'})
+    assert_instance_of DhlLabelResponse, response
   end
 
   def test_parse_response
     mock_response = xml_fixture('dhl/ship_validate_response_europe_success')
     parsed_label = @carrier.parse_label_response(mock_response)
-
-    # assert parsed_label.success?
+  
+    assert parsed_label.success?
     assert_equal 'LOGISTICS SERVICES', parsed_label.product_name
     assert_equal 'LOG', parsed_label.product_content_code
     assert_equal '131297', parsed_label.unit_id
@@ -103,12 +126,4 @@ class DhlTest < Test::Unit::TestCase
     assert_equal 'JD011 000 0000 0004 7093', parsed_label.license_plate
   end
 
-  # def test_generate_label
-  #   mock_response = xml_fixture('dhl/ship_validate_response_europe')
-  #   @carrier.stubs(:commit).returns(mock_response)
-  #   response = @carrier.generate_label(@locations[:ottawa],
-  #                           @locations[:beverly_hills],
-  #                           @packages.values_at(:book, :wii), :test => true)
-  #   assert_instance_of LabelResponse, response
-  # end
 end

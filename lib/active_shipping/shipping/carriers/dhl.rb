@@ -325,7 +325,6 @@ module ActiveMerchant
         label_request = build_label_request(origin, destination, packages, options)
 
         response = commit(save_request(label_request), options[:test])
-        raise response.inspect
         result =  parse_label_response(response, options)
         result
       end
@@ -406,7 +405,7 @@ module ActiveMerchant
         target.CountryCode location.country_code
         target.CountryName location.country
         target.Contact do |contact|
-          contact.PersonName 'Tim Case'#location.name
+          contact.PersonName location.name
           contact.PhoneNumber location.phone
         end
         target
@@ -422,38 +421,10 @@ module ActiveMerchant
         target.PostalCode location.postal_code
         target.CountryCode location.country_code
         target.CountryName location.country
-        # target.Contact do |contact|
-        #   contact.PersonName 'Tim Case'#location.name
-        #   contact.PhoneNumber location.phone
-        # end
-        
-        
-        # target.CompanyName 'Santa inc'
-        # target.RegisteredAccount '272317228'          
-        # target.AddressLine 'Suit 333'
-        # target.City 'RedWood City'
-        # target.Division 'California'
-        # target.PostalCode '1800'
-        # target.CountryCode 'BE'
-        # target.CountryName 'Belgium'
         target.Contact do |sc|
-          sc.PersonName 'Prasanta Sinha'
-          sc.PhoneNumber '11234-325423'
-          sc.PhoneExtension '45232'
-          sc.FaxNumber '11234325423'
-          sc.Telex '454586'
-          sc.Email do |sce|
-            sce.From 'dsa@us.dhl.com'
-            sce.To 'dsa@us.dhl.com'
-            sce.Subject 'subject'
-            sce.ReplyTo 'String'
-            sce.Body 'yuy'
-          end
+          sc.PersonName location.name
+          sc.PhoneNumber location.phone
         end
-        
-        
-        
-        
         target
       end
       
@@ -462,31 +433,10 @@ module ActiveMerchant
         xml_request.Shipper do |shipper|
           shipper.ShipperID options[:shipper_id]
           shipper = build_ship_location(shipper, origin, options)
-          # shipper.CompanyName 'Santa inc'
-          # shipper.RegisteredAccount '272317228'          
-          # shipper.AddressLine 'Suit 333'
-          # shipper.City 'RedWood City'
-          # shipper.Division 'California'
-          # shipper.PostalCode '1800'
-          # shipper.CountryCode 'BE'
-          # shipper.CountryName 'Belgium'
-          # shipper.Contact do |sc|
-          #   sc.PersonName 'Prasanta Sinha'
-          #   sc.PhoneNumber '11234-325423'
-          #   sc.PhoneExtension '45232'
-          #   sc.FaxNumber '11234325423'
-          #   sc.Telex '454586'
-          #   sc.Email do |sce|
-          #     sce.From 'dsa@us.dhl.com'
-          #     sce.To 'dsa@us.dhl.com'
-          #     sce.Subject 'subject'
-          #     sce.ReplyTo 'String'
-          #     sce.Body 'yuy'
-          #   end
-          # end
         end
         xml_request.target!
       end
+      
       def build_commodity
         xml_request = Builder::XmlMarkup.new
         xml_request.Commodity do |com|
@@ -519,56 +469,12 @@ module ActiveMerchant
           sd.DimensionUnit  imperial ? 'I' : 'C'
           sd.WeightUnit imperial ? 'L' : 'K'
           sd.GlobalProductCode options[:global_product_code]
-          sd.LocalProductCode 'asd'
+          sd.LocalProductCode options[:local_product_code]
           sd.DoorTo options[:door_to]
           sd.Date Time.now.strftime("%Y-%m-%d")
           sd.Contents options[:content]
         end
 
-        xml_request.target!
-      end
-
-
-
-      def build_special_service
-        xml_request = Builder::XmlMarkup.new
-        xml_request.SpecialService do |ss|
-          ss.SpecialServiceType 'S'
-          ss.CommunicationType 'P'
-          ss.ChargeValue '33.10'
-          ss.CurrencyCode 'USD'
-        end
-        xml_request.target!
-      end
-
-      attr_reader :options,
-      :country,
-      :postal_code,
-      :province,
-      :city,
-      :name,
-      :address1,
-      :address2,
-      :address3,
-      :phone,
-      :fax,
-      :address_type
-
-
-
-      def build_place
-        xml_request = Builder::XmlMarkup.new
-        xml_request.Place do |place|
-          place.ResidenceOrBusiness 'B'
-          place.CompanyName 'ixyz industry'
-          place.AddressLine '123.9878'
-          place.AddressLine 'utnh ytrr'
-          place.City 'redwood city'
-          place.CountryCode 'US'
-          place.DivisionCode 'CA'
-          place.Division 'california'
-          place.PostalCode '94403'
-        end
         xml_request.target!
       end
 
@@ -579,11 +485,8 @@ module ActiveMerchant
         request += build_consignee(destination)
         request += build_shipment_details(packages, origin, options)
         request += build_shipper(origin, options)
-        request += build_special_service
-        request += build_place
         request += '</req:ShipmentValidateRequestEA>'
         request
-
       end
 
 
