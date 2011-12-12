@@ -387,6 +387,7 @@ module ActiveMerchant
         xml_request.Billing do |b|
           b.ShipperAccountNumber @options[:account_number]
           b.ShippingPaymentType  options[:payment_type]
+          b.BillingAccountNumber @options[:account_number]
         end
         xml_request.target!
       end

@@ -17,7 +17,7 @@ class DhlTest < Test::Unit::TestCase
     :postal_code => '10178',
     :phone => '1-613-580-2400',
     :fax => '1-613-580-2495',
-    :country => 'Belgium',
+    :country => 'Germany',
     :name => 'Michael Schumacher')
     
     @germany2 = Location.new(:country_code => 'DE',
@@ -28,28 +28,64 @@ class DhlTest < Test::Unit::TestCase
     :postal_code => '10117',
     :phone => '1-613-580-2400',
     :fax => '1-613-580-2495',
-    :country => 'Belgium',
+    :country => 'Germany',
     :name => 'Michael Schumacher')
     
     @belgium1 = Location.new(:country_code => "BE",
     :company_name => "McDonalds",
     :city => "Brussels",
     :address1 => "Elsensesteenweg 21",
+    :state => "Brussels",
     :postal_code => '1050',
     :phone => '32 2 513 51 93',
     :fax => '32 2 513 51 93',
     :country => 'Belgium',
     :name => 'Michael Schumacher')
     
-    @belgium2 = Location.new(:country_code => "BE",
-    :company_name => "McDonalds",
-    :city => "Brussels",
-    :address1 => "Place de la Bourse 3",
-    :postal_code => '1000',
+    @spain1 = Location.new(:country_code => "ES",
+    :company_name => "Starbucks",
+    :city => "Madrid",
+    :address1 => "Gran Via 73",
+    :province => "Madrid",
+    :postal_code => '28013',
     :phone => '32 2 513 42 13',
     :fax => '32 2 513 42 13',
-    :country => 'Belgium',
-    :name => 'Michael Schumacher')
+    :country => 'Spain',
+    :name => 'Christiano Ronaldo')
+    
+    @spain2 = Location.new(:country_code => "ES",
+    :company_name => "Starbucks",
+    :city => "Barcelona",
+    :state => "Catalunya",
+    :address1 => "Rambla Catalunya 10",
+    :postal_code => '8007',
+    :phone => '32 2 513 42 13',
+    :fax => '32 2 513 42 13',
+    :country => 'Spain',
+    :name => 'Lionel Messi')
+    
+    @france1 = Location.new(:country_code => "FR",
+    :company_name => "Starbucks",
+    :city => "Paris",
+    :state => "Paris",
+    :address1 => "26 Avenue Opéra",
+    :postal_code => '75001',
+    :phone => '32 2 513 42 13',
+    :fax => '32 2 513 42 13',
+    :country => 'France',
+    :name => 'Lionel Messi')
+
+    @switzerland1 = Location.new(:country_code => "SE",
+    :company_name => "Starbucks",
+    :city => "Stockholm",
+    :address1 => "Kärntner Straße 49",
+    :state => "Wien",
+    :postal_code => '111 57',
+    :phone => '32 2 513 42 13',
+    :fax => '32 2 513 42 13',
+    :country => 'Sweden',
+    :name => 'Lionel Messi')
+    
   end
 
   def test_initialize_options_requirements
@@ -58,14 +94,14 @@ class DhlTest < Test::Unit::TestCase
     assert_raises ArgumentError do Dhl.new(:password => '7777777') end
     assert_nothing_raised {   Dhl.new(:login => 'powerupxml',
       :password => '5vec67d78a',
-      :account_number => '272317228',
+      :account_number => '6231274685',
     :test => true)}
   end
 
 
   def test_generate_label
     mock_response = xml_fixture('dhl/ship_validate_response_europe_success')
-    @carrier.stubs(:commit).returns(mock_response)
+    # @carrier.stubs(:commit).returns(mock_response)
     response = @carrier.generate_label(@germany1,
                             @germany2,
                             @packages.values_at(:book, :wii), {:payment_type => 'R',
@@ -74,7 +110,7 @@ class DhlTest < Test::Unit::TestCase
                                                                :local_product_code => 'C',
                                                                :door_to => 'DD',
                                                                :content => 'Sample ',
-                                                               :shipper_id => '272317228'})
+                                                               :shipper_id => '6231274685'})
     assert_instance_of DhlLabelResponse, response
     assert response.success?
     assert_nil response.message
