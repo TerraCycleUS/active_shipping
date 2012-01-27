@@ -1,0 +1,946 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="https://www.mypostbusiness.ch/wsbc/barcode/v2_0/types"
+	targetNamespace="https://www.mypostbusiness.ch/wsbc/barcode/v2_0/types"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<!-- 5.4 Use Case Validiere Kombination (Seite 12) -->
+	<xs:element name="ValidateCombination">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Language" type="Language" />
+				<xs:element name="Envelope">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="LabelDefinition">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="LabelLayout">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:length value="2" />
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Data">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Provider">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Sending">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Item" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="ItemID" minOccurs="0">
+																				<xs:simpleType>
+																					<xs:restriction base="xs:string">
+																						<xs:maxLength value="50" />
+																					</xs:restriction>
+																				</xs:simpleType>
+																			</xs:element>
+																			<xs:element name="Attributes" minOccurs="0">
+																				<xs:complexType>
+																					<xs:sequence>
+																						<xs:element name="ATT_PRZL" minOccurs="1"
+																							maxOccurs="unbounded">
+																							<xs:simpleType>
+																								<xs:restriction base="xs:string">
+																									<xs:maxLength value="5" />
+																								</xs:restriction>
+																							</xs:simpleType>
+																						</xs:element>
+																					</xs:sequence>
+																				</xs:complexType>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ValidateCombinationResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Envelope">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="LabelDefinition">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="LabelLayout">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:length value="2" />
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Data">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Provider">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Sending">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Item" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="ItemID" minOccurs="0">
+																				<xs:simpleType>
+																					<xs:restriction base="xs:string">
+																						<xs:maxLength value="50" />
+																					</xs:restriction>
+																				</xs:simpleType>
+																			</xs:element>
+																			<xs:element name="Errors" type="ErrorsType"
+																				minOccurs="0">
+																			</xs:element>
+																			<xs:element name="Warnings" type="WarningsType"
+																				minOccurs="0">
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+
+	<!-- 5.5 Use Case Generiere Adressträger (Seite 34) -->
+	<xs:element name="GenerateLabel">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Language" type="Language" />
+				<xs:element name="Envelope">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="LabelDefinition">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="LabelLayout">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:length value="2" />
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="PrintAddresses" type="PrintAddressesType" />
+										<xs:element name="ImageFileType">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="5" />
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="ImageResolution">
+											<xs:simpleType>
+												<xs:restriction base="xs:int">
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="FileInfos">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="FrankingLicense">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="8" />
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+                                        <xs:element name="PpFranking" type="xs:boolean" default="false">
+                                        </xs:element>
+										<xs:element name="Customer">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="CUS_Name1">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:maxLength value="25" />
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="CUS_Name2" minOccurs="0">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:maxLength value="25" />
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="CUS_Street">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:maxLength value="25" />
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="CUS_POBox" minOccurs="0">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:maxLength value="25" />
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="CUS_ZIP">
+														<xs:simpleType>
+															<xs:restriction base="xs:integer">
+																<xs:totalDigits value="6"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="CUS_City">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:maxLength value="25" />
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="CUS_Country" minOccurs="0">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:length value="2" />
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="CUS_Logo" minOccurs="0">
+														<xs:simpleType>
+															<xs:restriction base="xs:base64Binary">
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="CUS_LogoFormat" minOccurs="0">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:maxLength value="3" />
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="CUS_DomicilePostOffice"
+														minOccurs="0">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:maxLength value="35" />
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Data">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Provider">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Sending">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Item" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="ItemID" minOccurs="0">
+																				<xs:simpleType>
+																					<xs:restriction base="xs:string">
+																						<xs:maxLength value="50" />
+																					</xs:restriction>
+																				</xs:simpleType>
+																			</xs:element>
+																			<xs:element name="ItemNumber" minOccurs="0">
+																				<xs:simpleType>
+																					<xs:restriction base="xs:string">
+																						<xs:maxLength value="8" />
+																					</xs:restriction>
+																				</xs:simpleType>
+																			</xs:element>
+																			<xs:element name="IdentCode" minOccurs="0">
+																				<xs:simpleType>
+																					<xs:annotation>
+																						<xs:documentation>IdentCode is only a valid input
+																							for Post-internal applications. For Post-external
+																							applications the IdentCode must not be set.
+																						</xs:documentation>
+																					</xs:annotation>
+																					<xs:restriction base="xs:string">
+																						<xs:maxLength value="50" />
+																					</xs:restriction>
+																				</xs:simpleType>
+																			</xs:element>
+																			<xs:element name="Recipient">
+																				<xs:complexType>
+																					<xs:sequence>
+																						<xs:element name="REC_Title" minOccurs="0">
+																							<xs:simpleType>
+																								<xs:restriction base="xs:string">
+																									<xs:maxLength value="35" />
+																								</xs:restriction>
+																							</xs:simpleType>
+																						</xs:element>
+																						<xs:element name="REC_Name1">
+																							<xs:simpleType>
+																								<xs:restriction base="xs:string">
+																									<xs:maxLength value="35" />
+																								</xs:restriction>
+																							</xs:simpleType>
+																						</xs:element>
+																						<xs:element name="REC_Name2" minOccurs="0">
+																							<xs:simpleType>
+																								<xs:restriction base="xs:string">
+																									<xs:maxLength value="35" />
+																								</xs:restriction>
+																							</xs:simpleType>
+																						</xs:element>
+																						<xs:element name="REC_Street"
+																							minOccurs="0">
+																							<xs:simpleType>
+																								<xs:restriction base="xs:string">
+																									<xs:maxLength value="35" />
+																								</xs:restriction>
+																							</xs:simpleType>
+																						</xs:element>
+																						<xs:element name="REC_POBox" minOccurs="0">
+																							<xs:simpleType>
+																								<xs:restriction base="xs:string">
+																									<xs:maxLength value="35" />
+																								</xs:restriction>
+																							</xs:simpleType>
+																						</xs:element>
+																						<xs:element name="REC_ZIP" minOccurs="0">
+																							<xs:simpleType>
+																								<xs:restriction base="xs:string">
+																									<xs:maxLength value="10"/>
+																								</xs:restriction>
+																							</xs:simpleType>
+																						</xs:element>
+																						<xs:element name="REC_City">
+																							<xs:simpleType>
+																								<xs:restriction base="xs:string">
+																									<xs:maxLength value="35" />
+																								</xs:restriction>
+																							</xs:simpleType>
+																						</xs:element>
+																						<xs:element name="REC_Country"
+																							minOccurs="0">
+																							<xs:simpleType>
+																								<xs:restriction base="xs:string">
+																									<xs:length value="2" />
+																								</xs:restriction>
+																							</xs:simpleType>
+																						</xs:element>
+																						<xs:element name="REC_Phone" minOccurs="0">
+																							<xs:simpleType>
+																								<xs:restriction base="xs:string">
+																									<xs:maxLength value="20" />
+																								</xs:restriction>
+																							</xs:simpleType>
+																						</xs:element>
+																						<xs:element name="REC_Mobile"
+																							minOccurs="0">
+																							<xs:simpleType>
+																								<xs:restriction base="xs:string">
+																									<xs:maxLength value="20" />
+																								</xs:restriction>
+																							</xs:simpleType>
+																						</xs:element>
+																						<xs:element name="REC_EMail" minOccurs="0">
+																							<xs:simpleType>
+																								<xs:restriction base="xs:string">
+																									<xs:maxLength value="160" />
+																								</xs:restriction>
+																							</xs:simpleType>
+																						</xs:element>
+																						<xs:element name="REC_Data" minOccurs="0">
+																							<xs:complexType>
+																								<xs:sequence>
+																									<xs:element name="REC_DAT"
+																										minOccurs="0" maxOccurs="20">
+																										<xs:complexType>
+																											<xs:sequence>
+																												<xs:element name="REC_DAT_Type">
+																													<xs:simpleType>
+																														<xs:restriction base="xs:string">
+																															<xs:maxLength value="35" />
+																														</xs:restriction>
+																													</xs:simpleType>
+																												</xs:element>
+																												<xs:element name="REC_DAT_Value">
+																													<xs:simpleType>
+																														<xs:restriction base="xs:string">
+																															<xs:maxLength value="50" />
+																														</xs:restriction>
+																													</xs:simpleType>
+																												</xs:element>
+																											</xs:sequence>
+																										</xs:complexType>
+																									</xs:element>
+																								</xs:sequence>
+																							</xs:complexType>
+																						</xs:element>
+																					</xs:sequence>
+																				</xs:complexType>
+																			</xs:element>
+																			<xs:element name="Attributes" minOccurs="0">
+																				<xs:complexType>
+																					<xs:sequence>
+																						<xs:element name="ATT_PRZL" minOccurs="1"
+																							maxOccurs="unbounded">
+																							<xs:simpleType>
+																								<xs:restriction base="xs:string">
+																									<xs:maxLength value="5" />
+																								</xs:restriction>
+																							</xs:simpleType>
+																						</xs:element>
+																						<xs:element name="ATT_Amount"
+																							minOccurs="0">
+																							<xs:simpleType>
+																								<xs:restriction base="xs:float">
+																									<xs:maxInclusive value="99999.99" />
+																									<xs:minInclusive value="0.00" />
+																								</xs:restriction>
+																							</xs:simpleType>
+																						</xs:element>
+																						<xs:element name="ATT_FreeText"
+																							minOccurs="0">
+																							<xs:simpleType>
+																								<xs:restriction base="xs:string">
+																									<xs:maxLength value="34" />
+																								</xs:restriction>
+																							</xs:simpleType>
+																						</xs:element>
+																						<xs:element name="ATT_DeliveryDate"
+																							minOccurs="0">
+																							<xs:simpleType>
+																								<xs:restriction base="xs:date">
+																								</xs:restriction>
+																							</xs:simpleType>
+																						</xs:element>
+																						<xs:element name="ATT_ParcelNo"
+																							minOccurs="0">
+																							<xs:simpleType>
+																								<xs:restriction base="xs:int">
+																									<xs:maxInclusive value="99" />
+																									<xs:minInclusive value="0" />
+																								</xs:restriction>
+																							</xs:simpleType>
+																						</xs:element>
+																						<xs:element name="ATT_ParcelTotal"
+																							minOccurs="0">
+																							<xs:simpleType>
+																								<xs:restriction base="xs:int">
+																									<xs:maxInclusive value="99" />
+																									<xs:minInclusive value="0" />
+																								</xs:restriction>
+																							</xs:simpleType>
+																						</xs:element>
+																						<xs:element name="ATT_DeliveryPlace"
+																							minOccurs="0">
+																							<xs:simpleType>
+																								<xs:restriction base="xs:string">
+																									<xs:maxLength value="35" />
+																								</xs:restriction>
+																							</xs:simpleType>
+																						</xs:element>
+																						<xs:element name="ATT_ProClima"
+																							minOccurs="0">
+																							<xs:simpleType>
+																								<xs:restriction base="xs:boolean">
+																								</xs:restriction>
+																							</xs:simpleType>
+																						</xs:element>
+																					</xs:sequence>
+																				</xs:complexType>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:element name="GenerateLabelResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Envelope">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="LabelDefinition">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="LabelLayout">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:length value="2" />
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="PrintAddresses" type="PrintAddressesType" />
+										<xs:element name="ImageFileType">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="5" />
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="ImageResolution">
+											<xs:simpleType>
+												<xs:restriction base="xs:int">
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="ColorPrintRequired">
+											<xs:simpleType>
+												<xs:restriction base="xs:boolean" />
+											</xs:simpleType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Data">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Provider">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Sending">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Item" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="ItemID" minOccurs="0">
+																				<xs:simpleType>
+																					<xs:restriction base="xs:string">
+																						<xs:maxLength value="50" />
+																					</xs:restriction>
+																				</xs:simpleType>
+																			</xs:element>
+																			<xs:element name="IdentCode" minOccurs="0">
+																				<xs:simpleType>
+																					<xs:restriction base="xs:string">
+																						<xs:maxLength value="50" />
+																					</xs:restriction>
+																				</xs:simpleType>
+																			</xs:element>
+																			<xs:element name="Label" minOccurs="0">
+																				<xs:simpleType>
+																					<xs:restriction base="xs:base64Binary"></xs:restriction>
+																				</xs:simpleType>
+																			</xs:element>
+																			<xs:element name="Errors" type="ErrorsType"
+																				minOccurs="0">
+																			</xs:element>
+																			<xs:element name="Warnings" type="WarningsType"
+																				minOccurs="0">
+																			</xs:element>
+
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+	<!-- 5.6 Use Case Lese Dienstleistungsgruppen  -->
+	<xs:element name="ReadServiceGroups">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="Language" type="Language" />
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ReadServiceGroupsResponse">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="ServiceGroup" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ServiceGroupID">
+								<xs:simpleType>
+									<xs:restriction base="xs:int">
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="Description">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="255"></xs:maxLength>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Errors" type="ErrorsType" minOccurs="0" />
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- 5.7 Use Case Lese Basisleistungen  -->
+	<xs:element name="ReadBasicServices">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Language" type="Language" />
+				<xs:element name="ServiceGroupID" type="xs:int" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ReadBasicServicesResponse">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="BasicService" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="PRZL" maxOccurs="unbounded">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="5"></xs:maxLength>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="Description">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="255"></xs:maxLength>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Errors" type="ErrorsType" minOccurs="0" />
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+
+
+
+	<!-- 5.8 Use Case Lese Zusatzleistungen  -->
+	<xs:element name="ReadAdditionalServices">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Language" type="Language" />
+				<xs:element name="PRZL" maxOccurs="unbounded">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="5"></xs:maxLength>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ReadAdditionalServicesResponse">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="AdditionalService" minOccurs="0"
+					maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="PRZL">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="5"></xs:maxLength>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="Description">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="255"></xs:maxLength>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Errors" type="ErrorsType" minOccurs="0" />
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+
+
+
+	<!-- 5.9 Use Case Lese Zustellanweisungen  -->
+	<xs:element name="ReadDeliveryInstructions">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Language" type="Language" />
+				<xs:element name="PRZL" maxOccurs="unbounded">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="5"></xs:maxLength>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ReadDeliveryInstructionsResponse">
+		<xs:complexType>
+			<xs:choice>			
+				<xs:element name="DeliveryInstructions" minOccurs="0"
+					maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="PRZL">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="5"></xs:maxLength>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+				            <xs:element name="Description">
+		            			<xs:simpleType>
+		            				<xs:restriction base="xs:string">
+			            				<xs:maxLength value="255"></xs:maxLength>
+					            	</xs:restriction>
+					            </xs:simpleType>
+				            </xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Errors" type="ErrorsType" minOccurs="0" />
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- 5.10 Use Case Lese Darstellungsarten  -->
+	<xs:element name="ReadLabelLayouts">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Language" type="Language" />
+				<xs:element name="ServiceGroupID" type="xs:int">
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ReadLabelLayoutsResponse">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="LabelLayout" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="LabelLayout">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:length value="2" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="MaxServices" type="xs:int">
+							</xs:element>
+							<xs:element name="MaxDeliveryInstructions" type="xs:int">
+							</xs:element>
+							<xs:element name="FreeTextAllowed" type="xs:boolean">
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Errors" type="ErrorsType" minOccurs="0" />
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:complexType name="MessageType">
+		<xs:annotation>
+			<xs:documentation>Represents a business error or warning. Does not
+				include technical errors, those are handled by SOAP faults.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Code">
+				<xs:annotation>
+					<xs:documentation>Five digit error/warning code. Error codes starts
+						with a "E" and warning codes with a "W"</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:length value="5"></xs:length>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Message">
+				<xs:annotation>
+					<xs:documentation>Descriptive text in English for the occurred
+						business warning/error.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="500"></xs:maxLength>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ErrorsType">
+		<xs:annotation>
+			<xs:documentation>Structure containing a list of occurred business
+				errors.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Error" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="MessageType">
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="WarningsType">
+		<xs:annotation>
+			<xs:documentation>Structure containing a list of occurred business
+				warnings.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Warning" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="MessageType">
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="Language">
+		<xs:annotation>
+			<xs:documentation>Represents the end-users language. The service
+				returns all localized texts including error-messages in the selected
+				language.
+            </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="de">
+				<xs:annotation>
+					<xs:documentation>German
+                                  </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fr">
+				<xs:annotation>
+					<xs:documentation>French
+                                  </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="it">
+				<xs:annotation>
+					<xs:documentation>Italien
+                                  </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="en">
+				<xs:annotation>
+					<xs:documentation>English
+                                  </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="PrintAddressesType">
+		<xs:annotation>
+			<xs:documentation>Enumeration to indicated wheter addresses are
+				printet or not.
+            </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="None">
+				<xs:annotation>
+					<xs:documentation>No Addresses are printed.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OnlyRecipient">
+				<xs:annotation>
+					<xs:documentation>Only recipient's address is printed.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RecipientAndCustomer">
+				<xs:annotation>
+					<xs:documentation>Recipient and customer addresses are printed.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

@@ -1,0 +1,68 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:typ="https://www.mypostbusiness.ch/wsbc/barcode/v2_0/types">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <typ:GenerateLabel>
+         <typ:Language>de</typ:Language>
+         <typ:Envelope>
+            <typ:LabelDefinition>
+               <typ:LabelLayout>A6</typ:LabelLayout>
+               <typ:PrintAddresses>RecipientAndCustomer</typ:PrintAddresses>
+               <typ:ImageFileType>GIF</typ:ImageFileType>
+               <typ:ImageResolution>300</typ:ImageResolution>
+            </typ:LabelDefinition>
+            <typ:FileInfos>
+               <typ:FrankingLicense>60032862</typ:FrankingLicense>
+               <typ:PpFranking>false</typ:PpFranking>
+               <typ:Customer>
+                  <typ:CUS_Name1>Musterfirma</typ:CUS_Name1>
+                  <typ:CUS_Name2>Generalagentur</typ:CUS_Name2>
+                  <typ:CUS_Street>Musterstrasse 9</typ:CUS_Street>
+                  <typ:CUS_POBox>Postfach 600</typ:CUS_POBox>
+                  <typ:CUS_ZIP>8000</typ:CUS_ZIP>
+                  <typ:CUS_City>Musterhausen</typ:CUS_City>
+                  <typ:CUS_Country>CH</typ:CUS_Country>
+                  <typ:CUS_DomicilePostOffice>3001 Bern</typ:CUS_DomicilePostOffice>
+               </typ:Customer>
+            </typ:FileInfos>
+            <typ:Data>
+               <typ:Provider>
+                  <typ:Sending>
+                     <typ:Item>
+                        <typ:ItemID>2</typ:ItemID>
+                        <typ:Recipient>
+                           <typ:REC_Title>Herr</typ:REC_Title>
+                           <typ:REC_Name1>Hans Muster</typ:REC_Name1>
+                           <typ:REC_Name2>z.H. Vreni Muster</typ:REC_Name2>
+                           <typ:REC_Street>Musterstrasse 1</typ:REC_Street>
+                           <typ:REC_POBox>Postfach</typ:REC_POBox>
+                           <typ:REC_ZIP>8000</typ:REC_ZIP>
+                           <typ:REC_City>Musterhausen</typ:REC_City>
+                           <typ:REC_Country>CH</typ:REC_Country>
+                           <typ:REC_Phone>441234567</typ:REC_Phone>
+                           <typ:REC_Mobile>791234567</typ:REC_Mobile>
+                           <typ:REC_EMail>hans.muster@muster.ch</typ:REC_EMail>
+                           <typ:REC_Data>
+                              <typ:REC_DAT>
+                                 <typ:REC_DAT_Type></typ:REC_DAT_Type>
+                                 <typ:REC_DAT_Value></typ:REC_DAT_Value>
+                              </typ:REC_DAT>
+                           </typ:REC_Data>
+                        </typ:Recipient>
+                        <typ:Attributes>
+                           <typ:ATT_PRZL>PRI</typ:ATT_PRZL>
+                           <typ:ATT_Amount>0</typ:ATT_Amount>
+                           <typ:ATT_FreeText></typ:ATT_FreeText>
+                           <typ:ATT_DeliveryDate>1970-01-01</typ:ATT_DeliveryDate>
+                           <typ:ATT_ParcelNo>0</typ:ATT_ParcelNo>
+                           <typ:ATT_ParcelTotal>0</typ:ATT_ParcelTotal>
+                           <typ:ATT_DeliveryPlace></typ:ATT_DeliveryPlace>
+                           <typ:ATT_ProClima>true</typ:ATT_ProClima>
+                        </typ:Attributes>
+                     </typ:Item>
+                  </typ:Sending>
+               </typ:Provider>
+            </typ:Data>
+         </typ:Envelope>
+      </typ:GenerateLabel>
+   </soapenv:Body>
+</soapenv:Envelope>

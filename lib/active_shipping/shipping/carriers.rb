@@ -7,6 +7,7 @@ require 'active_shipping/shipping/carriers/kunaki'
 require 'active_shipping/shipping/carriers/canada_post'
 require 'active_shipping/shipping/carriers/new_zealand_post'
 require 'active_shipping/shipping/carriers/dhl'
+require 'active_shipping/shipping/carriers/swiss_post'
 
 module ActiveMerchant
   module Shipping

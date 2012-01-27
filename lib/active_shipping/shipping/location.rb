@@ -17,7 +17,9 @@ module ActiveMerchant #:nodoc:
                   :attention_name,
                   :company_name,
                   :tax_id_number,
-                  :email
+                  :email,
+                  :title,
+                  :mobile
       
       alias_method :zip, :postal_code
       alias_method :postal, :postal_code
@@ -42,6 +44,8 @@ module ActiveMerchant #:nodoc:
         @company_name = options[:company_name]
         @tax_id_number = options[:tax_id_number]
         @email = options[:email]
+        @mobile = options[:mobile]
+        @title = options[:title]
         raise ArgumentError.new('address_type must be either "residential" or "commercial"') if options[:address_type] and not (["residential", "commercial", ""]).include?(options[:address_type].to_s)
         @address_type = options[:address_type].nil? ? nil : options[:address_type].to_s
       end
