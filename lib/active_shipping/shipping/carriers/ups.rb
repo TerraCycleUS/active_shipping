@@ -262,10 +262,15 @@ module ActiveMerchant
               end
               
             end
-            
+
+            if options[:negotiated_rate]
+              shipment << XmlNode.new('RateInformation') do |rate_information|
+                rate_information << XmlNode.new('NegotiatedRatesIndicator')
+              end
+            end
+
             # not implemented:  * Shipment/ShipmentServiceOptions element
-            #                   * Shipment/RateInformation element
-            
+
           end
           
         end
@@ -384,6 +389,12 @@ module ActiveMerchant
                   end
                 end
 
+              end
+            end
+
+            if options[:negotiated_rate]
+              shipment << XmlNode.new('RateInformation') do |rate_information|
+                rate_information << XmlNode.new('NegotiatedRatesIndicator')
               end
             end
 
