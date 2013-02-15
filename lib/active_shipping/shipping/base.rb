@@ -14,6 +14,7 @@ module ActiveMerchant
       
       mattr_accessor :logger
       self.logger = Logger.new(STDERR)
+      self.logger.level = Logger::INFO
     end
   end
 end
