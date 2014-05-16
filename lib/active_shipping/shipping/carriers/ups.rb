@@ -177,13 +177,17 @@ module ActiveMerchant
         end
       end
       
+      def iso_8859_1_encode xml_request
+        CGI.unescapeHTML xml_request.to_s.encode('ISO-8859-1', xml: :text)
+      end
+
       def build_access_request
         xml_request = XmlNode.new('AccessRequest') do |access_request|
           access_request << XmlNode.new('AccessLicenseNumber', @options[:key])
           access_request << XmlNode.new('UserId', @options[:login])
           access_request << XmlNode.new('Password', @options[:password])
         end
-        xml_request.to_s
+        iso_8859_1_encode xml_request
       end
       
       def build_rate_request(origin, destination, packages, options={})
@@ -274,7 +278,7 @@ module ActiveMerchant
           end
           
         end
-        xml_request.to_s
+        iso_8859_1_encode xml_request
       end
       
       def build_tracking_request(tracking_number, options={})
@@ -285,7 +289,7 @@ module ActiveMerchant
           end
           root_node << XmlNode.new('TrackingNumber', tracking_number.to_s)
         end
-        xml_request.to_s
+        iso_8859_1_encode xml_request
       end
 
       def build_label_request(origin, destination, packages, options)
@@ -413,7 +417,7 @@ module ActiveMerchant
           end
 
         end
-        xml_request.to_s
+        iso_8859_1_encode xml_request
       end
 
       def build_label_accept_request(digest, options={})
@@ -428,7 +432,7 @@ module ActiveMerchant
 
           root_node << XmlNode.new('ShipmentDigest', digest)
         end
-        xml_request.to_s
+        iso_8859_1_encode xml_request
       end
             
       def build_location_node(name,location,options={})
