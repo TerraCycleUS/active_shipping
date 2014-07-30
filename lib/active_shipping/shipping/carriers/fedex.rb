@@ -14,8 +14,8 @@ module ActiveMerchant
       cattr_reader :name
       @@name = "FedEx"
       
-      TEST_URL = 'https://gatewaybeta.fedex.com:443/xml'
-      LIVE_URL = 'https://gateway.fedex.com:443/xml'
+      TEST_URL = 'https://gatewaybeta.fedex.com:443/web-services/ship'
+      LIVE_URL = 'https://gateway.fedex.com:443/web-services/ship'
       
       CarrierCodes = {
         "fedex_ground" => "FDXG",
@@ -190,13 +190,6 @@ module ActiveMerchant
                   tw << XmlNode.new('Units', imperial ? 'LB' : 'KG')
                   tw << XmlNode.new('Value', [((imperial ? pkg.lbs : pkg.kgs).to_f*1000).round/1000.0, 0.1].max)
                 end
-                rps << XmlNode.new('Dimensions') do |dimensions|
-                  [:length,:width,:height].each do |axis|
-                    value = ((imperial ? pkg.inches(axis) : pkg.cm(axis)).to_f*1000).round/1000.0 # 3 decimals
-                    dimensions << XmlNode.new(axis.to_s.capitalize, value.ceil)
-                  end
-                  dimensions << XmlNode.new('Units', imperial ? 'IN' : 'CM')
-                end
               end
             # end
             
@@ -231,61 +224,61 @@ module ActiveMerchant
       
       def build_label_request(origin, destination, packages, options)
         imperial = ['US','LR','MM'].include?(origin.country_code(:alpha2))
-
-        xml_request = XmlNode.new('ProcessShipmentRequest', :xmlns => 'http://fedex.com/ws/ship/v9') do |root_node|
-          root_node << build_request_header 
-
-          # Version
-          root_node << XmlNode.new('Version') do |version_node|
-            version_node << XmlNode.new('ServiceId', 'ship')
-            version_node << XmlNode.new('Major', '9')
-            version_node << XmlNode.new('Intermediate', '0')
-            version_node << XmlNode.new('Minor', '0')
-          end
-          
-          root_node << XmlNode.new('ApplicationId', 'esb')
-
-          root_node << XmlNode.new('RequestedShipment') do |rs|
-            rs << XmlNode.new('ShipTimestamp', Time.now)
-            rs << XmlNode.new('DropoffType', options[:dropoff_type] || 'REGULAR_PICKUP')
-            rs << XmlNode.new('ServiceType', options[:service_type_code])
-            rs << XmlNode.new('PackagingType', options[:packaging_type] || 'YOUR_PACKAGING')
+        
+        xml_request = XmlNode.new('Envelope', xmlns: "http://schemas.xmlsoap.org/soap/envelope/", "xmlns:xsd" => "http://www.w3.org/2001/XMLSchema", "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance") do |envelope|
+          envelope << XmlNode.new('Body') do |body|
             
-            rs << build_location_node('Shipper', (options[:shipper] || origin), :contact => true)
-            rs << build_location_node('Recipient', destination, :contact => true)
-
-            if options[:shipper] and options[:shipper] != origin
-              rs << build_location_node('Origin', origin)
-            end
-            rs << build_shipping_charges_payment_node(origin, options)
-            rs << XmlNode.new('LabelSpecification') do |label_node|
-              label_node << XmlNode.new('LabelFormatType', 'COMMON2D')
-              label_node << XmlNode.new('ImageType', 'PNG')
-              label_node << XmlNode.new('LabelStockType','PAPER_7X4.75')
-            end
-            
-            rs << XmlNode.new('RateRequestTypes', 'ACCOUNT')
-            rs << XmlNode.new('PackageCount', 1) #packages.size) See note below
-            rs << XmlNode.new('PackageDetail','INDIVIDUAL_PACKAGES')
-            # begin packages
-            # TODO: Multi-Ship actually requires multiple requests tied together with a Master Tracking Number. Ignore for now.
-            # packages.each do |pkg|
-              pkg = packages[0]
-              rs << XmlNode.new('RequestedPackageLineItems') do |rps|
-                rps << XmlNode.new('Weight') do |tw|
-                  tw << XmlNode.new('Units', imperial ? 'LB' : 'KG')
-                  tw << XmlNode.new('Value', [((imperial ? pkg.lbs : pkg.kgs).to_f*1000).round/1000.0, 0.1].max)
-                end
-                rps << XmlNode.new('Dimensions') do |dimensions|
-                  [:length,:width,:height].each do |axis|
-                    value = ((imperial ? pkg.inches(axis) : pkg.cm(axis)).to_f*1000).round/1000.0 # 3 decimals
-                    dimensions << XmlNode.new(axis.to_s.capitalize, value.ceil)
-                  end
-                  dimensions << XmlNode.new('Units', imperial ? 'IN' : 'CM')
-                end
+            body << XmlNode.new('ProcessShipmentRequest', xmlns: "http://fedex.com/ws/ship/v13") do |process_shipment_request|
+              process_shipment_request << build_request_header
+              
+              # Version
+              process_shipment_request << XmlNode.new('Version') do |version_node|
+                version_node << XmlNode.new('ServiceId', 'ship')
+                version_node << XmlNode.new('Major', '13')
+                version_node << XmlNode.new('Intermediate', '0')
+                version_node << XmlNode.new('Minor', '0')
               end
-            # end
-            # end packages
+              
+              process_shipment_request << XmlNode.new('RequestedShipment') do |rs|
+                rs << XmlNode.new('ShipTimestamp', Time.now)
+                rs << XmlNode.new('DropoffType', options[:dropoff_type] || 'REGULAR_PICKUP')
+                rs << XmlNode.new('ServiceType', options[:service_type_code])
+                rs << XmlNode.new('PackagingType', options[:packaging_type] || 'YOUR_PACKAGING')
+                
+                rs << build_location_node('Shipper', (options[:shipper] || origin), :contact => true)
+                rs << build_location_node('Recipient', destination, :contact => true)
+                
+                if options[:shipper] and options[:shipper] != origin
+                  rs << build_location_node('Origin', origin)
+                end
+                rs << build_shipping_charges_payment_node(origin, options)
+                rs << build_special_services_requested_node(origin, options)  if options[:special_service_type]
+                rs << build_smart_post_detail_node(origin, options)  if options[:smart_post_detail]
+                rs << XmlNode.new('LabelSpecification') do |label_node|
+                  label_node << XmlNode.new('LabelFormatType', 'COMMON2D')
+                  label_node << XmlNode.new('ImageType', 'PDF')
+                end
+                
+                rs << XmlNode.new('RateRequestTypes', 'ACCOUNT')
+                rs << XmlNode.new('PackageCount', 1) #packages.size) See note below
+                # begin packages
+                # TODO: Multi-Ship actually requires multiple requests tied together with a Master Tracking Number. Ignore for now.
+                # packages.each do |pkg|
+                pkg = packages[0]
+                rs << XmlNode.new('RequestedPackageLineItems') do |rps|
+                  rps << XmlNode.new('Weight') do |tw|
+                    tw << XmlNode.new('Units', imperial ? 'LB' : 'KG')
+                    tw << XmlNode.new('Value', [((imperial ? pkg.lbs : pkg.kgs).to_f*1000).round/1000.0, 0.1].max)
+                  end
+                  rps << XmlNode.new('CustomerReferences') do |customer_references|
+                    customer_references << XmlNode.new('CustomerReferenceType', 'RMA_ASSOCIATION')
+                    customer_references << XmlNode.new('Value', packages.first.options[:collection_reference_code][0..19])
+                  end
+                end
+                # end
+                # end packages
+              end
+            end
           end
         end
         xml_request.to_s
@@ -341,13 +334,33 @@ module ActiveMerchant
         shipping_charges_payment_node = XmlNode.new('ShippingChargesPayment') do |xml_node|
           xml_node << XmlNode.new('PaymentType', options[:payment_type] || 'SENDER')
           xml_node << XmlNode.new('Payor') do |payor_node|
-            payor_node << XmlNode.new('AccountNumber', @options[:account])
-            payor_node << XmlNode.new('CountryCode', origin.country_code)
+            payor_node << XmlNode.new('ResponsibleParty') do |responsible_party|
+              responsible_party << XmlNode.new('AccountNumber', @options[:account])
+              responsible_party << XmlNode.new('Contact')
+            end
           end
         end
         shipping_charges_payment_node
       end
                   
+      def build_special_services_requested_node(origin, options={})
+        special_services_requested_node = XmlNode.new('SpecialServicesRequested') do |services_node|
+          services_node << XmlNode.new('SpecialServiceTypes', options[:special_service_type])
+          services_node << XmlNode.new('ReturnShipmentDetail') do |return_details_node|
+            return_details_node << XmlNode.new('ReturnType', options[:return_type])
+          end
+        end
+        special_services_requested_node
+      end
+
+      def build_smart_post_detail_node(origin, options={})
+        smart_post_detail_node = XmlNode.new('SmartPostDetail')
+        options[:smart_post_detail].each do |k, v|
+          smart_post_detail_node << XmlNode.new(k, v)
+        end
+        smart_post_detail_node
+      end
+
       def parse_rate_response(origin, destination, packages, response, options)
         rate_estimates = []
         success, message = nil
@@ -429,17 +442,20 @@ module ActiveMerchant
       
       def parse_label_response(response, options)
         xml = REXML::Document.new(response)
-        root_node = xml.elements['ProcessShipmentReply']
         success = response_success?(xml)
         message = response_message(xml)
         if success
-          shipment_details = root_node.elements['CompletedShipmentDetail']
-          completed_package_details = shipment_details.elements['CompletedPackageDetails']
-          tracking_details = completed_package_details.elements['TrackingIds']
-          tracking_number = tracking_details.get_text('TrackingNumber').value
-          label_details = completed_package_details.elements['Label']
-          parts = label_details.elements['Parts']          
-          image_data =  Base64::decode64(parts.get_text("Image").to_s)
+          root_node = xml.elements['//ProcessShipmentReply']
+
+          smartpost_usps_barcode_node = root_node.get_text('.//StringBarcodes[./Type[text()="USPS"]]/Value')
+
+          tracking_number = if smartpost_usps_barcode_node 
+            smartpost_usps_barcode_node.value.gsub("#","")
+          else
+            root_node.get_text('.//TrackingNumber').value
+          end
+
+          image_data = Base64::decode64( root_node.get_text(".//Label//Image").to_s )
         end
 
         LabelResponse.new(success, message, Hash.from_xml(response), {
@@ -451,7 +467,7 @@ module ActiveMerchant
       end      
       
       def response_status_node(document)
-        document.elements['/*/Notifications/']
+        document.elements['//Notifications/']
       end
       
       def response_success?(document)
