@@ -25,6 +25,7 @@ module ActiveMerchant
         "PA" => "Parcel",
         "DF" => "DHL Flyer"
       }
+
       PaymentTypes = {
         'shipper' => 'S',
         'receiver' => 'R',
@@ -32,7 +33,6 @@ module ActiveMerchant
       }
 
       GlobalProductCodes = {
-
         "0"	=> "LOGISTICS SERVICES",
         "1"	=> "CUSTOMS SERVICES",
         "2"	=> "EASY SHOP",
@@ -69,8 +69,6 @@ module ActiveMerchant
         "X"	=> "EXPRESS ENVELOPE",
         "Y"	=> "EXPRESS 12:00",
         "Z"	=> "Destination Charges"
-
-
       }
 
       DHL_Currency_Codes = {
@@ -307,6 +305,245 @@ module ActiveMerchant
         "ZW"	=>     "ZWD"
       }
 
+      DHL_Country_Codes = {
+        'AD' => "Andorra",
+        'AE' => "United Arab Emirates",
+        'AF' => "Afghanistan",
+        'AG' => "Antigua",
+        'AI' => "Anguilla",
+        'AL' => "Albania",
+        'AM' => "Armenia",
+        'AN' => "Netherlands Antilles",
+        'AO' => "Angola",
+        'AR' => "Argentina",
+        'AS' => "American Samoa",
+        'AT' => "Austria",
+        'AU' => "Australia",
+        'AW' => "Aruba",
+        'AZ' => "Azerbaijan",
+        'BA' => "Bosnia and Herzegovina",
+        'BB' => "Barbados",
+        'BD' => "Bangladesh",
+        'BE' => "Belgium",
+        'BF' => "Burkina Faso",
+        'BG' => "Bulgaria",
+        'BH' => "Bahrain",
+        'BI' => "Burundi",
+        'BJ' => "Benin",
+        'BM' => "Bermuda",
+        'BN' => "Brunei",
+        'BO' => "Bolivia",
+        'BR' => "Brazil",
+        'BS' => "Bahamas",
+        'BT' => "Bhutan",
+        'BW' => "Botswana",
+        'BY' => "Belarus",
+        'BZ' => "Belize",
+        'CA' => "Canada",
+        'CD' => "Congo",
+        'CF' => "Central African Republic",
+        'CG' => "Congo",
+        'CH' => "Switzerland",
+        'CI' => "Cote d'Ivoire",
+        'CK' => "Cook Islands",
+        'CL' => "Chile",
+        'CM' => "Cameroon",
+        'CN' => "China",
+        'CO' => "Colombia",
+        'CR' => "Costa Rica",
+        'CU' => "Cuba",
+        'CV' => "Cape Verde",
+        'CY' => "Cyprus",
+        'CZ' => "Czech Republic",
+        'DE' => "Germany",
+        'DJ' => "Djibouti",
+        'DK' => "Denmark",
+        'DM' => "Dominica",
+        'DO' => "Dominican Rep.",
+        'DZ' => "Algeria",
+        'EC' => "Ecuador",
+        'EE' => "Estonia",
+        'EG' => "Egypt",
+        'ER' => "Eritrea",
+        'ES' => "Spain",
+        'ET' => "Ethiopia",
+        'FI' => "Finland",
+        'FJ' => "Fiji",
+        'FK' => "Falkland Islands",
+        'FM' => "MICRONESIA",
+        'FO' => "Faroe Islands",
+        'FR' => "France",
+        'GA' => "Gabon",
+        'GB' => "United Kingdom",
+        'GD' => "Grenada",
+        'GE' => "Georgia",
+        'GF' => "French Guyana",
+        'GG' => "Guernsey",
+        'GH' => "Ghana",
+        'GI' => "Gibraltar",
+        'GL' => "Greenland",
+        'GM' => "Gambia",
+        'GN' => "Guinea Republic",
+        'GP' => "Guadeloupe",
+        'GQ' => "Guinea-Equatorial",
+        'GR' => "Greece",
+        'GT' => "Guatemala",
+        'GU' => "Guam",
+        'GW' => "Guinea-Bissau",
+        'GY' => "Guyana (British)",
+        'HK' => "Hong Kong",
+        'HN' => "Honduras",
+        'HR' => "Croatia",
+        'HT' => "Haiti",
+        'HU' => "Hungary",
+        'IC' => "Canary Islands",
+        'ID' => "Indonesia",
+        'IE' => "Ireland",
+        'IL' => "Israel",
+        'IN' => "India",
+        'IQ' => "Iraq",
+        'IR' => "Iran (Islamic Republic of)",
+        'IS' => "Iceland",
+        'IT' => "Italy",
+        'JE' => "Jersey",
+        'JM' => "Jamaica",
+        'JO' => "Jordan",
+        'JP' => "Japan",
+        'KE' => "Kenya",
+        'KG' => "Kyrgyzstan",
+        'KH' => "Cambodia",
+        'KI' => "Kiribati",
+        'KM' => "Comoros",
+        'KN' => "St. Kitts",
+        'KP' => "Korea",
+        'KR' => "Korea",
+        'KV' => "Kosovo",
+        'KW' => "Kuwait",
+        'KY' => "Cayman Islands",
+        'KZ' => "Kazakhstan",
+        'LA' => "Lao People's Democratic Republic",
+        'LB' => "Lebanon",
+        'LC' => "St. Lucia",
+        'LI' => "Liechtenstein",
+        'LK' => "Sri Lanka",
+        'LR' => "Liberia",
+        'LS' => "Lesotho",
+        'LT' => "Lithuania",
+        'LU' => "Luxembourg",
+        'LV' => "Latvia",
+        'LY' => "Libya",
+        'MA' => "Morocco",
+        'MC' => "Monaco",
+        'MD' => "Moldova",
+        'ME' => "Montenegro",
+        'MG' => "Madagascar",
+        'MH' => "Marshall Islands",
+        'MK' => "Macedonia",
+        'ML' => "Mali",
+        'MM' => "Myanmar",
+        'MN' => "Mongolia",
+        'MO' => "Macau",
+        'MP' => "Saipan",
+        'MQ' => "Martinique",
+        'MR' => "Mauritania",
+        'MS' => "Montserrat",
+        'MT' => "Malta",
+        'MU' => "Mauritius",
+        'MV' => "Maldives",
+        'MW' => "Malawi",
+        'MX' => "Mexico",
+        'MY' => "Malaysia",
+        'MZ' => "Mozambique",
+        'NA' => "Namibia",
+        'NC' => "New Caledonia",
+        'NE' => "Niger",
+        'NG' => "Nigeria",
+        'NI' => "Nicaragua",
+        'NL' => "Netherlands",
+        'NO' => "Norway",
+        'NP' => "Nepal",
+        'NR' => "Nauru",
+        'NU' => "Niue",
+        'NZ' => "New Zealand",
+        'OM' => "Oman",
+        'PA' => "Panama",
+        'PE' => "Peru",
+        'PF' => "Tahiti",
+        'PG' => "Papua New Guinea",
+        'PH' => "Philippines",
+        'PK' => "Pakistan",
+        'PL' => "Poland",
+        'PR' => "Puerto Rico",
+        'PT' => "Portugal",
+        'PW' => "Palau",
+        'PY' => "Paraguay",
+        'QA' => "Qatar",
+        'RE' => "Reunion",
+        'RO' => "Romania",
+        'RS' => "Serbia",
+        'RU' => "Russian Federation",
+        'RW' => "Rwanda",
+        'SA' => "Saudi Arabia",
+        'SB' => "Solomon Islands",
+        'SC' => "Seychelles",
+        'SD' => "Sudan",
+        'SE' => "Sweden",
+        'SG' => "Singapore",
+        'SH' => "SAINT HELENA",
+        'SI' => "Slovenia",
+        'SK' => "Slovakia",
+        'SL' => "Sierra Leone",
+        'SM' => "San Marino",
+        'SN' => "Senegal",
+        'SO' => "Somalia",
+        'SR' => "Suriname",
+        'SS' => "SOUTH SUDAN",
+        'ST' => "Sao Tome and Principe",
+        'SV' => "El Salvador",
+        'SY' => "Syria",
+        'SZ' => "Swaziland",
+        'TC' => "Turks and Caicos Islands",
+        'TD' => "Chad",
+        'TG' => "Togo",
+        'TH' => "Thailand",
+        'TJ' => "Tajikistan",
+        'TL' => "East Timor",
+        'TN' => "Tunisia",
+        'TO' => "Tonga",
+        'TR' => "Turkey",
+        'TT' => "Trinidad and Tobago",
+        'TV' => "Tuvalu",
+        'TW' => "Taiwan",
+        'TZ' => "Tanzania",
+        'UA' => "Ukraine",
+        'UG' => "Uganda",
+        'US' => "United States Of America",
+        'UY' => "Uruguay",
+        'UZ' => "Uzbekistan",
+        'VC' => "St. Vincent",
+        'VE' => "Venezuela",
+        'VG' => "Virgin Islands (British)",
+        'VI' => "Virgin Islands (US)",
+        'VN' => "Vietnam",
+        'VU' => "Vanuatu",
+        'WS' => "Samoa",
+        'XB' => "Bonaire",
+        'XC' => "Curacao",
+        'XE' => "St. Eustatius",
+        'XM' => "St. Maarten",
+        'XN' => "Nevis",
+        'XS' => "Somaliland",
+        'XY' => "St. Barthelemy",
+        'YE' => "Yemen",
+        'YT' => "Mayotte",
+        'ZA' => "South Africa",
+        'ZM' => "Zambia",
+        'ZW' => "Zimbabwe",
+      }
+
+      DHL_Countries_With_Imperial_Units = # notably the US is missing - maybe DHL uses metric for the US internally?
+        %w[AF AO AT AZ BI BN BT CR CU DM EE GA GD GH HR IC IL KE KR MN PF PY RW SC SE SG SL SM SN SO SR ST]
+        
       DoorTo = {
         'DD' => "Door to Door",
         'DA' => "Door to Airport",
@@ -315,9 +552,9 @@ module ActiveMerchant
       }
 
       def requirements
-        [:login, :password, :account_number, :test]
+        [:login, :password, :account_number, :return_service,
+          :global_product_code, :local_product_code, :door_to]
       end
-
 
       def generate_label(origin, destination, packages, options = {})
         options = @options.update(options)
@@ -331,171 +568,140 @@ module ActiveMerchant
 
       def parse_label_response(response, options ={})
 
-        xml = REXML::Document.new(response).root
+        xml = begin
+          REXML::Document.new(response)
+        rescue REXML::ParseException
+          REXML::Document.new(response.force_encoding("ISO-8859-1").encode("UTF-8"))
+        end
         success = response_success?(xml)
-        message = response_message(response) unless success
-        DhlLabelResponse.new(success, message, Hash.from_xml(response))
+
+        if success
+          tracking_number = xml.get_text('//AirwayBillNumber').value
+          image_data = Base64::decode64(xml.get_text("//LabelImage/OutputImage").to_s)
+        else
+          message = response_message(xml)
+        end
+        
+        hsh = begin
+          Hash.from_xml(response)
+        rescue REXML::ParseException
+          Hash.from_xml(response.force_encoding("ISO-8859-1").encode("UTF-8"))
+        end
+        LabelResponse.new(success, message, hsh, {
+          :labels => [Label.new(
+            tracking_number,
+            image_data
+          )]
+        })
       end
 
       def response_success?(document)
-        if response_status_node(document)
-          %w{Success}.include? response_status_node(document).get_text('ActionNote').to_s
-        else
-          false
-        end
+        document.get_text("//Note/ActionNote").try(:value) == "Success"
       end
 
       def response_message(document)
-        res = Hash.from_xml(document)
-        res = res["ShipmentValidateErrorResponse"]
-        "#{res['Response']['Status']['Condition']['ConditionCode']} - #{res['Response']['Status']['Condition']['ConditionData']}"
+        document.get_text("//ConditionData").value
       end
-
-      def response_status_node(document)
-        document.elements['/*/Note/']
-      end
-
-      # def parse_label_response(response, options)
-      #   return true
-      # end
 
       protected
 
-      def build_instruct
-        '<?xml version="1.0" encoding="UTF-8"?>
-        <req:ShipmentValidateRequestEA xmlns:req="http://www.dhl.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dhl.com
-        ship-val-req_EA.xsd">'
-      end
-
-      def build_request_service_header
-        xml_request = Builder::XmlMarkup.new
-        xml_request.Request do |r|
-          r.ServiceHeader do |servhead|
-            servhead.SiteID @options[:login]
-            servhead.Password @options[:password]
-          end
-        end
-        xml_request.NewShipper 'N'
-        xml_request.LanguageCode 'en'
-        xml_request.PiecesEnabled 'Y'
-
-        xml_request.target!
-      end
-
-      def build_billing(options)
-        xml_request = Builder::XmlMarkup.new
-        xml_request.Billing do |b|
-          b.ShipperAccountNumber @options[:account_number]
-          b.ShippingPaymentType  options[:payment_type]
-          b.BillingAccountNumber @options[:account_number]
-        end
-        xml_request.target!
-      end
-
-      def build_consignee(destination)
-        xml_request = Builder::XmlMarkup.new
-        xml_request.Consignee do |c|
-          c = build_location(c, destination)
-        end
-        xml_request.target!
-      end
-
-      def build_location(target, location, options = {})
-        target.CompanyName location.company_name
-        target.RegisteredAccount options[:shipper_id] unless options[:shipper_id].nil?
-        target.AddressLine location.address1
-        target.AddressLine location.address2 unless location.address2.nil?
-        target.City location.city
-        target.Division location.state
-        target.PostalCode location.postal_code
-        target.CountryCode location.country_code
-        target.CountryName location.country
-        target.Contact do |contact|
-          contact.PersonName location.name
-          contact.PhoneNumber location.phone
-        end
-        target
-      end
-
-      def build_ship_location(target, location, options = {})
-        target.CompanyName location.company_name
-        target.RegisteredAccount options[:shipper_id] unless options[:shipper_id].nil?
-        target.AddressLine location.address1
-        target.AddressLine location.address2 unless location.address2.nil?
-        target.City location.city
-        target.Division location.state
-        target.PostalCode location.postal_code
-        target.CountryCode location.country_code
-        target.CountryName location.country
-        target.Contact do |sc|
-          sc.PersonName location.name
-          sc.PhoneNumber location.phone
-        end
-        target
-      end
-
-      def build_shipper(origin, options)
-        xml_request = Builder::XmlMarkup.new
-        xml_request.Shipper do |shipper|
-          shipper.ShipperID options[:shipper_id]
-          shipper = build_ship_location(shipper, origin, options)
-        end
-        xml_request.target!
-      end
-
-      def build_commodity
-        xml_request = Builder::XmlMarkup.new
-        xml_request.Commodity do |com|
-          com.CommodityCode '1'
-          com.CommodityName 'String'
-        end
-        xml_request.target!
-      end
-
-      def build_shipment_details(packages, origin, options)
-        imperial = ['US','LR','MM'].include?(origin.country_code(:alpha2))
-        xml_request = Builder::XmlMarkup.new
-        xml_request.ShipmentDetails do |sd|
-          sd.NumberOfPieces packages.size
-          sd.CurrencyCode DHL_Currency_Codes[origin.country_code]
-          sd.Pieces do |pieces|
-            packages.each do |package|
-              pieces.Piece do |piece|
-                piece.PieceID packages.index(package)
-                piece.PackageType options[:package_type]
-                piece.Weight package.weight.to_f.round/1000.0
-                piece.Depth  (imperial ? package.inches(:length).to_i : package.cm(:length).to_i)
-                piece.Width  (imperial ? package.inches(:width).to_i : package.cm(:width).to_i)
-                piece.Height (imperial ? package.inches(:height).to_i : package.cm(:height).to_i)
-              end
-            end
-          end
-          sd.PackageType options[:package_type]
-          sd.Weight packages.map{|package| package.weight}.inject(0){|sum, i| sum + i}
-          sd.DimensionUnit  imperial ? 'I' : 'C'
-          sd.WeightUnit imperial ? 'L' : 'K'
-          sd.GlobalProductCode options[:global_product_code]
-          sd.LocalProductCode options[:local_product_code]
-          sd.DoorTo options[:door_to]
-          sd.Date Time.now.strftime("%Y-%m-%d")
-          sd.Contents options[:content]
-        end
-
-        xml_request.target!
+      def imperial?(country_code = ::TC_COUNTRY_CODE)
+        DHL_Countries_With_Imperial_Units.include? country_code.strip.upcase
       end
 
       def build_label_request(origin, destination, packages, options)
-        request = build_instruct
-        request += build_request_service_header
-        request += build_billing(options)
-        request += build_consignee(destination)
-        request += build_shipment_details(packages, origin, options)
-        request += build_shipper(origin, options)
-        request += '</req:ShipmentValidateRequestEA>'
-        request
+        xml = Builder::XmlMarkup.new
+
+        xml.instruct!
+
+        xml.req :ShipmentValidateRequestEA, "xmlns:req" => "http://www.dhl.com", "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance", "xsi:schemaLocation" => "http://www.dhl.com ship-val-req_EA.xsd" do
+          xml.Request do
+            xml.ServiceHeader do
+              xml.MessageTime Time.now.iso8601
+              xml.MessageReference '1234567890123456789012345678901' #TODO: A string, peferably number, to uniquely identify individual messages. Minimum length must be 28 and maximum length is 32
+              # The Message Reference element should contain a unique reference to the message, so that trace of a particular message can easily be carried out. It must be of minimum length of 28 and maximum 32. The value can be decided by the customer.
+              xml.SiteID @options[:login]
+              xml.Password @options[:password]
+            end
+          end
+          xml.NewShipper 'N'
+          xml.LanguageCode 'en'
+          xml.PiecesEnabled 'Y'
+          xml.Billing do
+            xml.ShipperAccountNumber @options[:account_number]
+            xml.ShippingPaymentType PaymentTypes[ ( @options[:return_service] ? 'receiver' : 'shipper' ) ]
+            xml.BillingAccountNumber @options[:account_number]  if @options[:return_service]
+          end
+          xml.Consignee do #destination
+            xml.CompanyName destination.company_name[0...35]
+            xml.AddressLine destination.address1[0...35]
+            xml.AddressLine destination.address2[0...35]  if destination.address2.present?
+            xml.AddressLine destination.address3[0...35]  if destination.address3.present?
+            xml.City destination.city[0...35]
+            xml.Division destination.state[0...35]  if destination.state.present?
+            xml.PostalCode destination.zip
+            xml.CountryCode destination.country_code
+            xml.CountryName DHL_Country_Codes[destination.country_code]
+            xml.Contact do
+              xml.PersonName destination.name[0...35]
+              xml.PhoneNumber destination.phone.present? ? destination.phone[0...25] : "NA"
+            end
+          end
+          #xml.Reference #TODO?
+          xml.ShipmentDetails do # optional
+            xml.NumberOfPieces packages.count
+            xml.CurrencyCode DHL_Currency_Codes[destination.country_code]
+            total_weight = 0
+            xml.Pieces do
+              for package_number in (1..packages.count) do
+                pkg = packages[ package_number - 1 ]
+                xml.Piece do
+                  xml.PieceID package_number
+                  #xml.PackageType 'CP' # custom packaging # optional
+                  xml.Weight (imperial? ? pkg.lbs : pkg.kgs).round 3
+                  total_weight += imperial? ? pkg.lbs : pkg.kgs
+                  xml.Depth (imperial? ? pkg.inches(:length) : pkg.cm(:length)).round
+                  xml.Width (imperial? ? pkg.inches(:width) : pkg.cm(:width)).round
+                  xml.Height (imperial? ? pkg.inches(:height) : pkg.cm(:height)).round
+                end
+              end
+            end
+            xml.PackageType 'CP' # custom packaging
+            xml.Weight total_weight.round 3
+            xml.DimensionUnit imperial? ? 'I' : 'C'
+            xml.WeightUnit imperial? ? 'L' : 'K'
+            xml.GlobalProductCode @options[:global_product_code]
+            xml.LocalProductCode @options[:local_product_code]
+            xml.DoorTo @options[:door_to]
+            xml.Date (Date.today + 1).iso8601
+            xml.Contents options[:brigade_unit_name]
+          end
+          xml.Shipper do
+            xml.ShipperID @options[:account_number] #as per instruction from Lionel Brendlin
+            xml.CompanyName origin.company_name[0...35]
+            xml.RegisteredAccount @options[:account_number]
+            xml.AddressLine origin.address1[0...35]
+            xml.AddressLine origin.address2[0...35]  if origin.address2.present?
+            xml.AddressLine origin.address3[0...35]  if origin.address3.present?
+            xml.City origin.city[0...35]
+            xml.Division origin.state[0...35]  if origin.state.present?
+            xml.PostalCode origin.zip
+            xml.CountryCode origin.country_code
+            xml.CountryName DHL_Country_Codes[origin.country_code]
+            xml.Contact do
+              xml.PersonName origin.name[0...35]
+              xml.PhoneNumber origin.phone.present? ? origin.phone[0...25] : "NA"
+            end
+          end
+          xml.SpecialService do
+            xml.SpecialServiceType 'PV' # label expiration: PT = 3 months, PU = 6 months, PV = 12 months, PW = 24 months
+          end
+          xml.EProcShip 'N'
+          xml.LabelImageFormat 'PDF'
+          xml.RequestArchiveDoc 'N'
+        end
+
       end
-
-
 
       def commit(request, test = false)
         ssl_post(test ? TEST_URL : LIVE_URL, request.gsub("\n",''))
