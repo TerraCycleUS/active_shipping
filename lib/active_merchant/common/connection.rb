@@ -113,8 +113,7 @@ module ActiveMerchant
       
       if verify_peer
         http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-        http.ca_file     = File.dirname(__FILE__) + '/../../certs/cacert.pem'
-      else               
+      else
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       end
     end
