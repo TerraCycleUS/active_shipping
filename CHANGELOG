@@ -1,3 +1,6 @@
+(2014-11-11)
+* Remove old invalid certs - use system default.
+
 * New Zealand Post [AbleTech]
 * Include address name for rate requests to Shipwire if provided [dennis]
 * Add support for address name to Location [dennis]
