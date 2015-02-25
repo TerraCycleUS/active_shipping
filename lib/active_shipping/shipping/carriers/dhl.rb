@@ -647,7 +647,9 @@ module ActiveMerchant
               xml.PhoneNumber destination.phone.present? ? destination.phone[0...25] : "NA"
             end
           end
-          #xml.Reference #TODO?
+          xml.Reference do
+            xml.ReferenceID options[:brigade_unit_name][0...35]
+          end
           xml.ShipmentDetails do # optional
             xml.NumberOfPieces packages.count
             xml.CurrencyCode DHL_Currency_Codes[destination.country_code]
