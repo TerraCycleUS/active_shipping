@@ -481,12 +481,18 @@ module ActiveMerchant
           
           xml.elements.each('/*/RatedShipment') do |rated_shipment|
             service_code = rated_shipment.get_text('Service/Code').to_s
+
+            total_price  = ( options[:negotiated_rate] ?
+                              rated_shipment.get_text('NegotiatedRates/NetSummaryCharges/GrandTotal/MonetaryValue') :
+                              rated_shipment.get_text('TotalCharges/MonetaryValue')
+                            ).to_s.to_f
+
             rate_estimates << RateEstimate.new(origin, destination, @@name,
                                 service_name_for(origin, service_code),
-                                :total_price => rated_shipment.get_text('TotalCharges/MonetaryValue').to_s.to_f,
+                                :total_price => total_price,
                                 :currency => rated_shipment.get_text('TotalCharges/CurrencyCode').to_s,
                                 :service_code => service_code,
-                                :packages => packages)
+                                :packages => packages) if ( options[:service_type_code].nil? or ( options[:service_type_code] == service_code))
           end
         end
         RateResponse.new(success, message, Hash.from_xml(response).values.first, :rates => rate_estimates, :xml => response, :request => last_request)
