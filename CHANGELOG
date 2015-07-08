@@ -1,3 +1,6 @@
+(2015-07-08)
+* Require 'rexml/document' in DHL lib to be able to parse XML
+
 (2015-02-24)
 * UPS rate req returns 'negotiated_rate's
 

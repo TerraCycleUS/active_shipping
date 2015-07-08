@@ -1,3 +1,5 @@
+require 'rexml/document'
+
 module ActiveMerchant
   module Shipping
 
@@ -543,7 +545,7 @@ module ActiveMerchant
 
       DHL_Countries_With_Imperial_Units = # notably the US is missing - maybe DHL uses metric for the US internally?
         %w[AF AO AT AZ BI BN BT CR CU DM EE GA GD GH HR IC IL KE KR MN PF PY RW SC SE SG SL SM SN SO SR ST]
-        
+
       DoorTo = {
         'DD' => "Door to Door",
         'DA' => "Door to Airport",
@@ -581,7 +583,7 @@ module ActiveMerchant
         else
           message = response_message(xml)
         end
-        
+
         hsh = begin
           Hash.from_xml(response)
         rescue REXML::ParseException
