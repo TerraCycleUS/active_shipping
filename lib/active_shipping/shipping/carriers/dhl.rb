@@ -549,7 +549,6 @@ module ActiveMerchant
       DoorTo = {
         'DD' => "Door to Door",
         'DA' => "Door to Airport",
-        'AA' => 'Door to Dor non-compliant',
         'AA' => 'Door to Dor non-compliant'
       }
 
